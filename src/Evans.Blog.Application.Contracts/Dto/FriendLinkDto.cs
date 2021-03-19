@@ -4,7 +4,7 @@ using System.Text;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Dto
 {
     public class FriendLinkDto : AuditedEntityDto<Guid>
     {

@@ -1,4 +1,4 @@
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Enums
 {
     public enum PostTags
     {

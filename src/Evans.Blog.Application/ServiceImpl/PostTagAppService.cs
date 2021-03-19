@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Evans.Blog.Dto;
+using Evans.Blog.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.ServiceImpl
 {
     public class PostTagAppService :
         CrudAppService<

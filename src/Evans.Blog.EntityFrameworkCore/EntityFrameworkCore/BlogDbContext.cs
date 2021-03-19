@@ -1,4 +1,4 @@
-﻿using Evans.Blog.Blogs;
+﻿using Evans.Blog.Services;
 using Microsoft.EntityFrameworkCore;
 using Evans.Blog.Users;
 using Volo.Abp.Data;

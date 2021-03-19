@@ -8,7 +8,7 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Guids;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Services
 {
     public class BlogDataSeedContributor : IDataSeedContributor, ITransientDependency
     {

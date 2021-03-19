@@ -3,6 +3,26 @@
   "texts": {
     "Menu:Home": "Home",
     "Welcome": "Welcome",
-    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io."
+    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Menu:Posts": "Posts",
+    "Actions": "Actions",
+    "Close": "Close",
+    "Delete": "Delete",
+    "Edit": "Edit",
+    "Title": "Post Title",
+    "Author": "Post Author",
+    "Url": "Post Url",
+    "Html": "Html",
+    "Markdown": "Post content",
+    "CreationTime": "Creation time",
+    "AreYouSure": "Are you sure?",
+    "AreYouSureToDelete": "Are you sure you want to delete this item?",
+    "Enum:PostTags:0": "Life",
+    "Enum:PostTags:1": "Technology",
+    "Enum:PostTags:2": "Food",
+    "Enum:PostTags:3": "Entertainment",
+    "Enum:PostTags:4": "Digital",
+    "Enum:PostTags:5": "Fashion",
+    "Enum:PostTags:6": "Other"
   }
 }

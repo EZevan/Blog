@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Evans.Blog.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Dto
 {
     public class TagDto : AuditedEntityDto<Guid>
     {

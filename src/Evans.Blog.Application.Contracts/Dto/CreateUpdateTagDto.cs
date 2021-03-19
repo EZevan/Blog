@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
+using Evans.Blog.Enums;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Dto
 {
     public class CreateUpdateTagDto
     {

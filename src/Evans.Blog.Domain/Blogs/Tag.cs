@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Evans.Blog.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Services
 {
     public class Tag : FullAuditedEntity<Guid>
     {

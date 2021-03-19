@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Evans.Blog.Blogs;
+using Evans.Blog.Dto;
+using Evans.Blog.Services;
 
 namespace Evans.Blog
 {

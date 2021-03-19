@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using Evans.Blog.Dto;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace Evans.Blog.Blogs
+namespace Evans.Blog.Services
 {
     public interface IPostAppService : 
         ICrudAppService<
