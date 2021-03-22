@@ -1,0 +1,45 @@
+@page "/posts"
+@using Volo.Abp.Application.Dtos
+@using Evans.Blog.Services
+@using Evans.Blog.Dto
+@* @inject IStringLocalizer<PostResource> L *@
+@inherits AbpCrudPageBase<IPostAppService, PostDto, Guid, PagedAndSortedResultRequestDto, CreateUpdatePostDto>
+
+<Card>
+    <CardHeader>
+        <h2>@L["Posts"]</h2>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="PostDto"
+                  Data="Entities"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="PostDto"
+                                Field="@nameof(PostDto.Title)"
+                                Caption="@L["Title"]"></DataGridColumn>
+                <DataGridColumn TItem="PostDto"
+                                Field="@nameof(PostDto.Author)"
+                                Caption="@L["Author"]">
+                    <DisplayTemplate>
+                        @* @L[$"Enum:BookType:{(int)context.Type}"] *@
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="PostDto"
+                                Field="@nameof(PostDto.Html)"
+                                Caption="@L["Html"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="PostDto"
+                                Field="@nameof(PostDto.Url)"
+                                Caption="@L["Url"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="PostDto"
+                                Field="@nameof(PostDto.Markdown)"
+                                Caption="@L["Markdown"]">
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>

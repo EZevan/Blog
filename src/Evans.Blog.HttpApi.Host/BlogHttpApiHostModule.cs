@@ -14,6 +14,7 @@ using Evans.Blog.EntityFrameworkCore;
 using Evans.Blog.MultiTenancy;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
@@ -211,6 +212,8 @@ namespace Evans.Blog
             app.UseAbpSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API");
+                options.DocExpansion(DocExpansion.None);
+                options.DocumentTitle = "接口文档 - EvansBlog⭐⭐⭐";
 
                 var configuration = context.GetConfiguration();
                 options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);

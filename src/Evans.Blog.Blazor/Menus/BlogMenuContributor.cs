@@ -41,7 +41,13 @@ namespace Evans.Blog.Blazor.Menus
                     l["Menu:Home"],
                     "/",
                     icon: "fas fa-home"
-                )
+                ).AddItem(
+                    new ApplicationMenuItem(
+                        BlogMenus.Post,
+                        l["Menu:Post"],
+                        "/posts"
+                        )
+                    )
             );
 
             return Task.CompletedTask;

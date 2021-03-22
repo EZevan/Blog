@@ -5,6 +5,9 @@ using Volo.Abp.Application.Services;
 
 namespace Evans.Blog.Services
 {
+    /// <summary>
+    /// The post 
+    /// </summary>
     public interface IPostAppService : 
         ICrudAppService<
             PostDto, //Used to show posts
