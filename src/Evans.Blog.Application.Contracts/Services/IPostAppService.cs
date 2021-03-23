@@ -6,7 +6,7 @@ using Volo.Abp.Application.Services;
 namespace Evans.Blog.Services
 {
     /// <summary>
-    /// The post 
+    /// Post corresponding service
     /// </summary>
     public interface IPostAppService : 
         ICrudAppService<

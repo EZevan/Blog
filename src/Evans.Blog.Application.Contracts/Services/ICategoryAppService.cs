@@ -5,6 +5,9 @@ using Volo.Abp.Application.Services;
 
 namespace Evans.Blog.Services
 {
+    /// <summary>
+    /// Category corresponding service
+    /// </summary>
     public interface ICategoryAppService : 
         ICrudAppService<
             CategoryDto, //Used to show categories

@@ -7,6 +7,10 @@
     <RootNamespace>Evans.Blog</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DocumentationFile>..\Evans.Blog.HttpApi.Host\Evans.Blog.Application.Contracts.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\Evans.Blog.Domain.Shared\Evans.Blog.Domain.Shared.csproj" />
   </ItemGroup>

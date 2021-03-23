@@ -7,6 +7,9 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Evans.Blog.ServiceImpl
 {
+    /// <summary>
+    /// Category corresponding service
+    /// </summary>
     public class CategoryAppService :
         CrudAppService<
             Category,

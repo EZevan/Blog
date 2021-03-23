@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Evans.Blog.EntityFrameworkCore;
 using Evans.Blog.MultiTenancy;
+using Evans.Blog.Swagger;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -57,6 +58,7 @@ namespace Evans.Blog
             ConfigureRedis(context, configuration, hostingEnvironment);
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context, configuration);
+            ConfigureRouting(context);
         }
 
         private void ConfigureCache(IConfiguration configuration)
@@ -92,7 +94,10 @@ namespace Evans.Blog
         {
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
-                options.ConventionalControllers.Create(typeof(BlogApplicationModule).Assembly);
+                options.ConventionalControllers.Create(typeof(BlogApplicationModule).Assembly, opts =>
+                {
+                    opts.RootPath = "evans-blog";
+                });
             });
         }
 
@@ -119,6 +124,15 @@ namespace Evans.Blog
                 {
                     options.SwaggerDoc("v1", new OpenApiInfo {Title = "Blog API", Version = "v1"});
                     options.DocInclusionPredicate((docName, description) => true);
+                    
+                    // Includes xml comments of controllers,entities and dto.
+                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,"Evans.Blog.Application.Contracts.xml"));
+                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,"Evans.Blog.Application.xml"));
+                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,"Evans.Blog.HttpApi.xml"));
+                    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory,"Evans.Blog.Domain.xml"));
+                    
+                    // Api documentation description of corresponding controllers.
+                    options.DocumentFilter<SwaggerDocumentFilter>();
                 });
         }
 
@@ -178,6 +192,15 @@ namespace Evans.Blog
             });
         }
 
+        private void ConfigureRouting(ServiceConfigurationContext context)
+        {
+            context.Services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.AppendTrailingSlash = true;
+            });
+        }
+
         public override void OnApplicationInitialization(ApplicationInitializationContext context)
         {
             var app = context.GetApplicationBuilder();
@@ -213,7 +236,7 @@ namespace Evans.Blog
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API");
                 options.DocExpansion(DocExpansion.None);
-                options.DocumentTitle = "接口文档 - EvansBlog⭐⭐⭐";
+                options.DocumentTitle = "Swagger UI - EvansBlog⭐⭐⭐";
 
                 var configuration = context.GetConfiguration();
                 options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);

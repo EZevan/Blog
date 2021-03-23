@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Evans.Blog.Application</name>
+    </assembly>
+    <members>
+        <member name="T:Evans.Blog.ServiceImpl.CategoryAppService">
+            <summary>
+            Category corresponding service
+            </summary>
+        </member>
+        <member name="T:Evans.Blog.ServiceImpl.HelloAbpAppService">
+            <summary>
+            Hello abp corresponding service
+            </summary>
+        </member>
+        <member name="M:Evans.Blog.ServiceImpl.HelloAbpAppService.GetAsync(System.String)">
+            <summary>
+            Get method
+            </summary>
+            <param name="message">message parameter</param>
+            <returns></returns>
+        </member>
+        <member name="T:Evans.Blog.ServiceImpl.PostAppService">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

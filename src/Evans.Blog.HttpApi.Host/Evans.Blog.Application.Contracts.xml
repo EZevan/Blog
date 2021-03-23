@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Evans.Blog.Application.Contracts</name>
+    </assembly>
+    <members>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Title">
+            <summary>
+            Post title
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Author">
+            <summary>
+            Post author
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Url">
+            <summary>
+            Post url
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Html">
+            <summary>
+            Post html
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Markdown">
+            <summary>
+            Post content
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.CategoryId">
+            <summary>
+            Category id
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.Title">
+            <summary>
+            Post title
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.Author">
+            <summary>
+            Post author
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.Url">
+            <summary>
+            Post url
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.Html">
+            <summary>
+            Post html
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.Markdown">
+            <summary>
+            Post content
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.CategoryId">
+            <summary>
+            Category id
+            </summary>
+        </member>
+        <member name="T:Evans.Blog.Services.ICategoryAppService">
+            <summary>
+            Category corresponding service
+            </summary>
+        </member>
+        <member name="T:Evans.Blog.Services.IHelloAbpAppService">
+            <summary>
+            Hello abp interface corresponding service
+            </summary>
+        </member>
+        <member name="T:Evans.Blog.Services.IPostAppService">
+            <summary>
+            Post corresponding service
+            </summary>
+        </member>
+    </members>
+</doc>

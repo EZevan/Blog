@@ -7,6 +7,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Evans.Blog.ServiceImpl
 {
+    /// <inheritdoc />
     public class PostAppService :
         CrudAppService<
             Post,
