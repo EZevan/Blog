@@ -24,6 +24,11 @@
             Post html
             </summary>
         </member>
+        <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Avatar">
+            <summary>
+            Post avatar
+            </summary>
+        </member>
         <member name="P:Evans.Blog.Dto.CreateUpdatePostDto.Markdown">
             <summary>
             Post content
@@ -52,6 +57,11 @@
         <member name="P:Evans.Blog.Dto.PostDto.Html">
             <summary>
             Post html
+            </summary>
+        </member>
+        <member name="P:Evans.Blog.Dto.PostDto.Avatar">
+            <summary>
+            Post avatar
             </summary>
         </member>
         <member name="P:Evans.Blog.Dto.PostDto.Markdown">

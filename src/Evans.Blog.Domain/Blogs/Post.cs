@@ -16,6 +16,8 @@ namespace Evans.Blog.Services
         public string Url { get; set; }
 
         public string Html { get; set; }
+        
+        public string Avatar { get; set; }
 
         public string Markdown { get; set; }
 

@@ -1,6 +1,8 @@
 ﻿using Evans.Blog.Services;
 using Microsoft.EntityFrameworkCore;
 using Evans.Blog.Users;
+using Serilog;
+using Serilog.Core;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
@@ -37,7 +39,7 @@ namespace Evans.Blog.EntityFrameworkCore
         public BlogDbContext(DbContextOptions<BlogDbContext> options)
             : base(options)
         {
-
+            
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

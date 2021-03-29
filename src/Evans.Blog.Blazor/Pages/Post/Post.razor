@@ -1,0 +1,17 @@
+@page "/post/{year:int}/{month:int}/{day:int}/{name}"
+
+
+@code
+{
+    public int? year { get; set; }
+    
+    [Parameter]
+    public int? month { get; set; }
+    
+    [Parameter]
+    public int? day { get; set; }
+    
+    [Parameter]
+    public string name { get; set; }
+}
+

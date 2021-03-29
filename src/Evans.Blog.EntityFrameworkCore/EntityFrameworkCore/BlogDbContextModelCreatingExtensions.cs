@@ -31,9 +31,9 @@ namespace Evans.Blog.EntityFrameworkCore
                 b.Property(x => x.Author).HasMaxLength(50).HasComment("The author of blog");
                 b.Property(x => x.Url).HasMaxLength(255).IsRequired().HasComment("The url of blog");
                 b.Property(x => x.Html).HasColumnType("longtext").IsRequired().HasComment("The html of blog");
+                b.Property(x => x.Avatar).HasColumnType("longtext").HasComment("The avatar of blog");
                 b.Property(x => x.Markdown).HasColumnType("longtext").IsRequired().HasComment("The markdown of blog");
                 b.Property(x => x.CategoryId).HasComment("The category id of blog");
-                b.Property(x => x.CreationTime).HasColumnType("datetime").HasComment("the creation time");
             })
                 .AddCommentForFullAuditedAggregateRootProps<Post>();
 

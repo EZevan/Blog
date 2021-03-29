@@ -3,15 +3,17 @@ using System;
 using Evans.Blog.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace Evans.Blog.Migrations
 {
     [DbContext(typeof(BlogMigrationsDbContext))]
-    partial class BlogMigrationsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210326162801_Add_Avatar")]
+    partial class Add_Avatar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

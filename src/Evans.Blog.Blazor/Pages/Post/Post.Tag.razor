@@ -1,0 +1,12 @@
+@page "/tag/{name}"
+
+<Loading />
+
+@code
+{
+    ///<summary>
+    /// tag name, which will be used as routing parameter above
+    /// </summary>
+    [Parameter]
+    public string name { get; set; }
+}

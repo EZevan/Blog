@@ -1,0 +1,41 @@
+@page "/post"
+@using AntDesign
+
+@if (Posts == null)
+{
+    <Empty/>
+}
+else
+{
+    <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical">
+    <ChildContent Context="item">
+        <ListItem Extra="@extra" Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })">
+            <ListItemMeta Description="@item.Author">
+                <AvatarTemplate>
+                    @avatar
+                </AvatarTemplate>
+                <TitleTemplate>
+                    <a href="@item.Url">@item.Title</a>
+                </TitleTemplate>
+            </ListItemMeta>
+            @item.Markdown
+        </ListItem>
+    </ChildContent>
+   </AntList>
+
+    @code {
+
+        RenderFragment avatar =@<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
+
+        RenderFragment extra = @<img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />;
+
+        RenderFragment<(string icon, string text)> iconText = context =>
+        @<Template>
+            <Space>
+                <SpaceItem><Icon Type="@context.icon" /></SpaceItem>
+                <SpaceItem>@context.text</SpaceItem>
+            </Space>
+        </Template> ;
+
+    }
+}

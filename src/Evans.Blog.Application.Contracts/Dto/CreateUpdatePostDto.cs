@@ -33,6 +33,11 @@ namespace Evans.Blog.Dto
         [StringLength(255)]
         [DataType(DataType.Html)]
         public string Html { get; set; }
+        
+        /// <summary>
+        /// Post avatar
+        /// </summary>
+        public string Avatar { get; set; }
 
         /// <summary>
         /// Post content

@@ -1,0 +1,38 @@
+<!-- Header.razor -->
+
+<header class="header">
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo">
+                <NavLink class="menu-item" href="/" Match="NavLinkMatch.All">
+                    📝EvansBlog
+                </NavLink>
+            </div>
+            <div class="menu navbar-right">
+                <NavLink class="menu-item" href="post">Post</NavLink>
+                <NavLink class="menu-item" href="category">Categoriy</NavLink>
+                <NavLink class="menu-item" href="tag">Tag</NavLink>
+                <NavLink class="menu-item other" href="other">Other</NavLink>
+                <input id="switch_default" type="checkbox" class="switch_default" @onchange="SwitchTheme" checked="@(_currentTheme == "Dark")" />
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+    <nav class="navbar-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <NavLink class="menu-item" href="" Match="NavLinkMatch.All">📝EvansBlog</NavLink>
+                    <NavLink @onclick="SwitchTheme">&nbsp;·&nbsp;@_currentTheme</NavLink>
+                </div>
+                <div class="menu-toggle" @onclick="ToggleNavMenu">&#9776; Menu</div>
+            </div>
+            <div class="menu @NavMenuCssClass">
+                <NavLink class="menu-item" href="post">Post</NavLink>
+                <NavLink class="menu-item" href="category">Category</NavLink>
+                <NavLink class="menu-item" href="tag">Tag</NavLink>
+                <NavLink class="menu-item other" href="other">Other</NavLink>
+            </div>
+        </div>
+    </nav>
+</header>

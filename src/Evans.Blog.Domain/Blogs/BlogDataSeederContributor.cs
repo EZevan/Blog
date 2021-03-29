@@ -33,6 +33,7 @@ namespace Evans.Blog.Services
                         CategoryId = _guidGenerator.Create(),
                         Url = "www.baidu.com",
                         Html = "http://www.baidu.com",
+                        Avatar = "pic/tianwen01.jpg",
                         Markdown = "It's good to have some initial data in the database before running the application. This section introduces the Data Seeding system of the ABP framework. You can skip this section if you don't want to create seed data, but it is suggested to follow it to learn this useful ABP Framework feature."
                     },
                     autoSave:true

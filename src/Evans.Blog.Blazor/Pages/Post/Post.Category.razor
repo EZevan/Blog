@@ -1,0 +1,12 @@
+@page "/category/{name}"
+
+<Loading />
+
+@code
+{
+    ///<summary>
+    /// category name, which will be used as routing parameter above
+    /// </summary>
+    [Parameter]
+    public string name { get; set; }
+}

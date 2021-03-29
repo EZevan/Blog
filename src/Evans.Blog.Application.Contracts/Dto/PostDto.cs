@@ -28,6 +28,11 @@ namespace Evans.Blog.Dto
         public string Html { get; set; }
 
         /// <summary>
+        /// Post avatar
+        /// </summary>
+        public string Avatar { get; set; }
+
+        /// <summary>
         /// Post content
         /// </summary>
         public string Markdown { get; set; }
