@@ -26,9 +26,8 @@ namespace Evans.Blog.Blazor.Pages.Post
         
         public int TotalPage { get; set; }
 
-        public IList<PostDto> Posts { get; set; } = new List<PostDto>();
-        
-        
+        public static IList<PostDto> Posts { get; set; } = new List<PostDto>();
+
         /// <summary>
         /// Initialization
         /// </summary>

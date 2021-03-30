@@ -1,41 +1,52 @@
 @page "/post"
 @using AntDesign
+@using Blazorise
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.RenderTree
+@using BreadcrumbItem = Volo.Abp.BlazoriseUI.BreadcrumbItem
 
 @if (Posts == null)
 {
-    <Empty/>
+    <Empty />
 }
 else
 {
-    <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical">
-    <ChildContent Context="item">
-        <ListItem Extra="@extra" Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })">
-            <ListItemMeta Description="@item.Author">
-                <AvatarTemplate>
-                    @avatar
-                </AvatarTemplate>
-                <TitleTemplate>
-                    <a href="@item.Url">@item.Title</a>
-                </TitleTemplate>
-            </ListItemMeta>
-            @item.Markdown
-        </ListItem>
-    </ChildContent>
-   </AntList>
-
+    <div class="post-wrap archive">
+        <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical" Size="large">
+            <ChildContent Context="item">
+                <ListItem Extra=@extra>
+                    @* <ListItem Extra="@extra" Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })"> *@
+                    <ListItemMeta Description="@item.Author">
+                        @* <AvatarTemplate> *@
+                        @*     @avatar *@
+                        @* </AvatarTemplate> *@
+                        <TitleTemplate>
+                            <a href="@item.Url">@item.Title</a>
+                        </TitleTemplate>
+                    </ListItemMeta>
+                    @item.Markdown
+                </ListItem>
+            </ChildContent>
+        </AntList>
+    </div>
+    
     @code {
-
+    
         RenderFragment avatar =@<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
 
-        RenderFragment extra = @<img width="272" alt="logo" src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" />;
+        RenderFragment extra = @<img width="272" alt="logo" src='' />;
 
-        RenderFragment<(string icon, string text)> iconText = context =>
-        @<Template>
-            <Space>
-                <SpaceItem><Icon Type="@context.icon" /></SpaceItem>
-                <SpaceItem>@context.text</SpaceItem>
-            </Space>
-        </Template> ;
-
+        RenderFragment<string> extras = context =>
+            @<img width="280" alt="logo" src="@context" />;
+    
+        @*RenderFragment<(string icon, string text)> iconText = context =>
+          @<Template>
+                <Space>
+                    <SpaceItem><Icon Type="@context.icon" /></SpaceItem>
+                    <SpaceItem>@context.text</SpaceItem>
+                </Space>
+            </Template> ;*@
+    
     }
 }
