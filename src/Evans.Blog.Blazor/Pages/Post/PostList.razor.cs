@@ -18,13 +18,15 @@ namespace Evans.Blog.Blazor.Pages.Post
         /// Current page number, which will be used as routing parameter above
         /// </summary>
         // [Parameter]
-        public int? PageNumber { get; set; }
+        public int PageNumber { get; set; }
 
         public int MaxResultCount { get; set; }
 
-        public int SkipCount { get; set; } = 10;
+        public int SkipCount { get; set; }
         
         public int TotalPage { get; set; }
+
+        public int TotalCount { get; set; }
 
         public static IList<PostDto> Posts { get; set; } = new List<PostDto>();
 
@@ -33,18 +35,21 @@ namespace Evans.Blog.Blazor.Pages.Post
         /// </summary>
         protected override async Task OnInitializedAsync()
         {
-            // setup default value
-            PageNumber ??= 1;
-
+            PageNumber = 1;
+            
             await RenderPageAsync(PageNumber);
             
             await base.OnInitializedAsync();
         }
 
         
-        private async Task RenderPageAsync(int? pageNumber = 1)
+        public async Task RenderPageAsync(int pageNumber)
         {
-            var skipCount = SkipCount * (pageNumber - 1);
+            PageNumber = pageNumber;
+            SkipCount = 10;
+            MaxResultCount = 10;
+            
+            var skipCount = SkipCount * (PageNumber - 1);
             var api = $"/api/evans-blog/post";
 
             if (skipCount <= 0 && MaxResultCount > 0)
@@ -62,9 +67,12 @@ namespace Evans.Blog.Blazor.Pages.Post
 
             Posts = postDtoPagedResultDto.Items;
 
-            Console.WriteLine(Posts.Count);
-
-            TotalPage = (int)Math.Ceiling((double)Posts?.Count / SkipCount);
+            TotalCount = postDtoPagedResultDto.TotalCount;
+            
+            TotalPage = (int)Math.Ceiling((double)TotalCount / SkipCount);
+            
+            Console.WriteLine($"total page: {TotalPage}");
+            Console.WriteLine($"total count: {TotalCount}");
         }
     }
 }

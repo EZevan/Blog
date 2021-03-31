@@ -1,6 +1,6 @@
 @page "/post"
 @using AntDesign
-@using Blazorise
+@using Evans.Blog.Dto
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Rendering
 @using Microsoft.AspNetCore.Components.RenderTree
@@ -13,9 +13,9 @@
 else
 {
     <div class="post-wrap archive">
-        <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical" Size="large">
+        <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical" Size="large" >
             <ChildContent Context="item">
-                <ListItem Extra=@extra>
+                <ListItem Extra=@extras(item.Avatar)>
                     @* <ListItem Extra="@extra" Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })"> *@
                     <ListItemMeta Description="@item.Author">
                         @* <AvatarTemplate> *@
@@ -25,21 +25,28 @@ else
                             <a href="@item.Url">@item.Title</a>
                         </TitleTemplate>
                     </ListItemMeta>
-                    @item.Markdown
+                    <div >
+                        @item.Markdown
+                    </div>
                 </ListItem>
             </ChildContent>
         </AntList>
+    @pagination
+    <Footer >
+        Footer
+    </Footer>
     </div>
     
     @code {
     
-        RenderFragment avatar =@<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
-
-        RenderFragment extra = @<img width="272" alt="logo" src='' />;
+        //RenderFragment avatar =@<Avatar Src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></Avatar>;
 
         RenderFragment<string> extras = context =>
             @<img width="280" alt="logo" src="@context" />;
-    
+
+        RenderFragment pagination => @<Pagination Current="@PageNumber" CurrentChanged=RenderPageAsync PageSize="@MaxResultCount" Total="TotalCount" Class="pagination" />;
+
+        RenderFragment fontStyle => @<p></p>;
         @*RenderFragment<(string icon, string text)> iconText = context =>
           @<Template>
                 <Space>
@@ -47,6 +54,6 @@ else
                     <SpaceItem>@context.text</SpaceItem>
                 </Space>
             </Template> ;*@
-    
+
     }
 }
