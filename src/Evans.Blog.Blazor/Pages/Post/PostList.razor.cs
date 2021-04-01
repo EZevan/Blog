@@ -42,7 +42,17 @@ namespace Evans.Blog.Blazor.Pages.Post
             await base.OnInitializedAsync();
         }
 
-        
+        protected override async Task OnParametersSetAsync()
+        {
+            Console.WriteLine($"pageNumber:{PageNumber}");
+            if (PageNumber > 1)
+            {
+                PageNumber = 1;
+                await RenderPageAsync(PageNumber);
+            }
+        }
+
+
         public async Task RenderPageAsync(int pageNumber)
         {
             PageNumber = pageNumber;
