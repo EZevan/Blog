@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using AntDesign;
 using Evans.Blog.Dto;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
 
 namespace Evans.Blog.Blazor.Pages.Post
 {
@@ -14,10 +13,7 @@ namespace Evans.Blog.Blazor.Pages.Post
     {
         [Inject] private HttpClient HttpClient { get; set; }
         
-        ///<summary>
-        /// Current page number, which will be used as routing parameter above
-        /// </summary>
-        // [Parameter]
+        [Parameter]
         public int PageNumber { get; set; }
 
         public int MaxResultCount { get; set; }
@@ -45,7 +41,7 @@ namespace Evans.Blog.Blazor.Pages.Post
         protected override async Task OnParametersSetAsync()
         {
             Console.WriteLine($"pageNumber:{PageNumber}");
-            if (PageNumber > 1)
+            if (PageNumber != 1)
             {
                 PageNumber = 1;
                 await RenderPageAsync(PageNumber);

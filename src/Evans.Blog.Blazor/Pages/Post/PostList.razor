@@ -1,9 +1,11 @@
 @page "/post"
+@page "/post/{PageNumber}"
 @using AntDesign
 @using Evans.Blog.Dto
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Rendering
 @using Microsoft.AspNetCore.Components.RenderTree
+@using OneOf.Types
 @using BreadcrumbItem = Volo.Abp.BlazoriseUI.BreadcrumbItem
 
 @if (Posts == null)
@@ -31,7 +33,7 @@ else
                 </ListItem>
             </ChildContent>
         </AntList>
-        @Pagination
+        @Pagination<Template></Template>
     </div>
     
     @code {
@@ -41,12 +43,17 @@ else
         readonly RenderFragment<string> _extra = context => @<img width="280" alt="logo" src="@context" />;
 
         RenderFragment Pagination => @<Pagination 
-                                          Current="@PageNumber" 
+                                          Current=PageNumber
                                           CurrentChanged=RenderPageAsync 
-                                          PageSize="@MaxResultCount" 
-                                          Total="TotalCount" 
+                                          PageSize=MaxResultCount
+                                          Total=TotalCount
+                                          ShowTotal=showTotal
                                           Style="float: right; margin-top: 16px"
+                                          ShowSizeChanger
+                                          ShowQuickJumper
                                       />;
+
+        readonly Func<PaginationTotalContext, string> showTotal = context => $"Total {context.Total} items";
 
         @*RenderFragment<(string icon, string text)> iconText = context =>
           @<Template>
