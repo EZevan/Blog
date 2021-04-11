@@ -23,6 +23,15 @@
     "Enum:PostTags:3": "Entertainment",
     "Enum:PostTags:4": "Digital",
     "Enum:PostTags:5": "Fashion",
-    "Enum:PostTags:6": "Other"
+    "Enum:PostTags:6": "Other",
+    "EvansBlog:0001": "There is already a category with the same name: {name}",
+    "Permission:Posts": "Post Management",
+    "Permission:Posts.Create": "Creating new post",
+    "Permission:Posts.Edit": "Editing the post",
+    "Permission:Posts.Delete": "Deleting the post",
+    "Permission:Categories": "Category Management",
+    "Permission:Categories.Create": "Creating new category",
+    "Permission:Categories.Edit": "Editing the category",
+    "Permission:Categories.Delete": "Deleting the category"
   }
 }

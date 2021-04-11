@@ -1,8 +1,37 @@
 {
     "culture": "zh-Hans",
-    "texts": {
-      "Menu:Home": "首页",
-      "Welcome": "欢迎",
-      "LongWelcomeMessage": "欢迎来到该应用程序. 这是一个基于ABP框架的启动项目. 有关更多信息, 请访问 abp.io."
-    }
+  "texts": {
+    "Menu:Home": "首页",
+    "Welcome": "欢迎",
+    "LongWelcomeMessage": "欢迎来到该应用程序. 这是一个基于ABP框架的启动项目. 有关更多信息, 请访问 abp.io.",
+    "Menu:Posts": "博客",
+    "Actions": "动作",
+    "Close": "关闭",
+    "Delete": "删除",
+    "Edit": "编辑",
+    "Title": "博客标题",
+    "Author": "博客作者",
+    "Url": "博客Url",
+    "Html": "Html",
+    "Markdown": "博客正文",
+    "CreationTime": "创建时间",
+    "AreYouSure": "你确定吗?",
+    "AreYouSureToDelete": "确定删除该项吗?",
+    "Enum:PostTags:0": "生活",
+    "Enum:PostTags:1": "技术",
+    "Enum:PostTags:2": "美食",
+    "Enum:PostTags:3": "娱乐",
+    "Enum:PostTags:4": "数码",
+    "Enum:PostTags:5": "时尚",
+    "Enum:PostTags:6": "其他",
+    "EvansBlog:0001": "已经存在一个同名的分类: {name}",
+    "Permission:Posts": "博客管理",
+    "Permission:Posts.Create": "创建博客",
+    "Permission:Posts.Edit": "编辑博客",
+    "Permission:Posts.Delete": "删除博客",
+    "Permission:Categories": "分类管理",
+    "Permission:Categories.Create": "创建分类",
+    "Permission:Categories.Edit": "编辑分类",
+    "Permission:Categories.Delete": "删除分类"
   }
+}

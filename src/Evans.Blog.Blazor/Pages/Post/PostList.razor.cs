@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using AntDesign;
 using Evans.Blog.Dto;
 using Microsoft.AspNetCore.Components;
+using Volo.Abp.Application.Dtos;
 
 namespace Evans.Blog.Blazor.Pages.Post
 {
@@ -22,9 +24,9 @@ namespace Evans.Blog.Blazor.Pages.Post
         
         public int TotalPage { get; set; }
 
-        public int TotalCount { get; set; }
+        public long TotalCount { get; set; }
 
-        public static IList<PostDto> Posts { get; set; } = new List<PostDto>();
+        public static IReadOnlyList<PostDto> Posts { get; set; } = new List<PostDto>();
 
         /// <summary>
         /// Initialization
@@ -41,6 +43,7 @@ namespace Evans.Blog.Blazor.Pages.Post
         protected override async Task OnParametersSetAsync()
         {
             Console.WriteLine($"pageNumber:{PageNumber}");
+
             if (PageNumber != 1)
             {
                 PageNumber = 1;
@@ -59,22 +62,30 @@ namespace Evans.Blog.Blazor.Pages.Post
             var api = $"/api/evans-blog/post";
 
             if (skipCount <= 0 && MaxResultCount > 0)
+            {
                 api += $"?maxResultCount={MaxResultCount}";
+            }
 
             if(MaxResultCount <= 0 && skipCount > 0)
+            {
                 api += $"?skipCount={skipCount}";
-            
+            }
+
             if(skipCount > 0 && MaxResultCount > 0)
+            {
                 api += $"?skipCount={skipCount}&maxResultCount={MaxResultCount}";
-            
+            }
+
             Console.WriteLine($"+++++++++++++api:{api}");
             
-            var postDtoPagedResultDto = await HttpClient.GetFromJsonAsync<PostDtoPagedResultDto>(api);
+            var postDtoPagedResultDto = await HttpClient.GetFromJsonAsync<PagedResultDto<PostDto>>(api);
 
-            Posts = postDtoPagedResultDto.Items;
+            if(postDtoPagedResultDto != null)
+            {
+                Posts = postDtoPagedResultDto.Items;
+                TotalCount = postDtoPagedResultDto.TotalCount;
+            }
 
-            TotalCount = postDtoPagedResultDto.TotalCount;
-            
             TotalPage = (int)Math.Ceiling((double)TotalCount / SkipCount);
             
             Console.WriteLine($"total page: {TotalPage}");

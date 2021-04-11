@@ -15,7 +15,7 @@
 else
 {
     <div class="post-wrap archive">
-        <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical" Size="large" >
+        <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical" Size="large" Split="false" >
             <ChildContent Context="item">
                 <ListItem Extra=@_extra(item.Avatar)>
                     @* <ListItem Extra="@extra" Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })"> *@
@@ -33,7 +33,7 @@ else
                 </ListItem>
             </ChildContent>
         </AntList>
-        @Pagination<Template></Template>
+        @Pagination
     </div>
     
     @code {
@@ -48,9 +48,9 @@ else
                                           PageSize=MaxResultCount
                                           Total=TotalCount
                                           ShowTotal=showTotal
-                                          Style="float: right; margin-top: 16px"
                                           ShowSizeChanger
                                           ShowQuickJumper
+                                          Style="float: right; margin-top: 16px"
                                       />;
 
         readonly Func<PaginationTotalContext, string> showTotal = context => $"Total {context.Total} items";

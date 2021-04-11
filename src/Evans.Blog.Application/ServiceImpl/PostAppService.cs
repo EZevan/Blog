@@ -1,13 +1,15 @@
 ﻿using System;
 using Evans.Blog.Dto;
+using Evans.Blog.Permissions;
 using Evans.Blog.Services;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
 namespace Evans.Blog.ServiceImpl
 {
-    /// <inheritdoc />
+    [Authorize(BlogPermissions.Posts.Default)]
     public class PostAppService :
         CrudAppService<
             Post,

@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace Evans.Blog.Dto
 {
-    public class CategoryDto : AuditedEntityDto<Guid>
+    public class CategoryDto : EntityDto<Guid>
     {
         public string CategoryName { get; set; }
 

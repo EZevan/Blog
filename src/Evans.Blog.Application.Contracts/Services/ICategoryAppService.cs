@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Evans.Blog.Dto;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -8,12 +9,16 @@ namespace Evans.Blog.Services
     /// <summary>
     /// Category corresponding service
     /// </summary>
-    public interface ICategoryAppService : 
-        ICrudAppService<
-            CategoryDto, //Used to show categories
-            Guid, //Primary key of category entity
-            PagedAndSortedResultRequestDto, //Used for paging and sorting 
-            CreateUpdateCategoryDto> //Used to create/update categories
+    public interface ICategoryAppService : IApplicationService
     {
+        Task<CategoryDto> GetCategoryAsync(Guid id);
+
+        Task<PagedResultDto<CategoryDto>> GetCategoryListAsync(GetCategoryListDto input);
+
+        Task<CategoryDto> CreateCategoryAsync(CreateUpdateCategoryDto input);
+
+        Task UpdateCategoryAsync(Guid id, CreateUpdateCategoryDto input);
+
+        Task DeleteCategoryAsync(Guid id);
     }
 }
