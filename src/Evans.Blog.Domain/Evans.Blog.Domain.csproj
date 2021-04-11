@@ -12,6 +12,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Blogs\Repositories\**" />
+    <EmbeddedResource Remove="Blogs\Repositories\**" />
+    <None Remove="Blogs\Repositories\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Evans.Blog.Domain.Shared\Evans.Blog.Domain.Shared.csproj" />
   </ItemGroup>
 
@@ -26,10 +32,6 @@
     <PackageReference Include="Volo.Abp.TenantManagement.Domain" Version="4.2.2" />
     <PackageReference Include="Volo.Abp.FeatureManagement.Domain" Version="4.2.2" />
     <PackageReference Include="Volo.Abp.SettingManagement.Domain" Version="4.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Blogs\Repositories\" />
   </ItemGroup>
 
 </Project>

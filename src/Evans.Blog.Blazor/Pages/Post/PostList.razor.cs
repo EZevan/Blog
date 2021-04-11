@@ -15,18 +15,17 @@ namespace Evans.Blog.Blazor.Pages.Post
     {
         [Inject] private HttpClient HttpClient { get; set; }
         
-        [Parameter]
-        public int PageNumber { get; set; }
+        private int PageNumber { get; set; }
 
-        public int MaxResultCount { get; set; }
+        private int PageSize { get; set; } = LimitedResultRequestDto.DefaultMaxResultCount;
 
-        public int SkipCount { get; set; }
-        
-        public int TotalPage { get; set; }
+        private string CurrentSorting { get; set; } = nameof(PostDto.CreationTime) + " Desc";
 
-        public long TotalCount { get; set; }
+        private int TotalPage { get; set; }
 
-        public static IReadOnlyList<PostDto> Posts { get; set; } = new List<PostDto>();
+        private int TotalCount { get; set; }
+
+        private static IReadOnlyList<PostDto> Posts { get; set; } = new List<PostDto>();
 
         /// <summary>
         /// Initialization
@@ -52,28 +51,26 @@ namespace Evans.Blog.Blazor.Pages.Post
         }
 
 
-        public async Task RenderPageAsync(int pageNumber)
+        private async Task RenderPageAsync(int pageNumber)
         {
             PageNumber = pageNumber;
-            SkipCount = 10;
-            MaxResultCount = 10;
             
-            var skipCount = SkipCount * (PageNumber - 1);
-            var api = $"/api/evans-blog/post";
+            var skipCount = PageSize * (PageNumber - 1);
+            var api = $"/api/evans-blog/post?{CurrentSorting}";
 
-            if (skipCount <= 0 && MaxResultCount > 0)
+            if (skipCount <= 0 && PageSize > 0)
             {
-                api += $"?maxResultCount={MaxResultCount}";
+                api += $"?maxResultCount={PageSize}";
             }
 
-            if(MaxResultCount <= 0 && skipCount > 0)
+            if(PageSize <= 0 && skipCount > 0)
             {
                 api += $"?skipCount={skipCount}";
             }
 
-            if(skipCount > 0 && MaxResultCount > 0)
+            if(skipCount > 0 && PageSize > 0)
             {
-                api += $"?skipCount={skipCount}&maxResultCount={MaxResultCount}";
+                api += $"?skipCount={skipCount}&maxResultCount={PageSize}";
             }
 
             Console.WriteLine($"+++++++++++++api:{api}");
@@ -83,10 +80,10 @@ namespace Evans.Blog.Blazor.Pages.Post
             if(postDtoPagedResultDto != null)
             {
                 Posts = postDtoPagedResultDto.Items;
-                TotalCount = postDtoPagedResultDto.TotalCount;
+                TotalCount = (int)postDtoPagedResultDto.TotalCount;
             }
 
-            TotalPage = (int)Math.Ceiling((double)TotalCount / SkipCount);
+            TotalPage = (int)Math.Ceiling((double)TotalCount / PageSize);
             
             Console.WriteLine($"total page: {TotalPage}");
             Console.WriteLine($"total count: {TotalCount}");
