@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Evans.Blog.Blogs;
 using Evans.Blog.Blogs.DomainServices;
 using Evans.Blog.Blogs.Repositories;
+using Evans.Blog.CategoryTags.Repositories;
 using Evans.Blog.Dto;
-using Evans.Blog.Permissions;
 using Evans.Blog.Services;
-using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
 namespace Evans.Blog.ServiceImpl
@@ -19,18 +18,31 @@ namespace Evans.Blog.ServiceImpl
     {
         private readonly IPostRepository _postRepository;
         private readonly PostManager _postManager;
+        private readonly ICategoryRepository _categoryRepository;
 
         public PostAppService(
             IPostRepository postRepository,
-            PostManager postManager)
+            PostManager postManager,
+            ICategoryRepository categoryRepository)
         {
             _postRepository = postRepository;
             _postManager = postManager;
+            _categoryRepository = categoryRepository;
         }
         
         public async Task<PostDto> GetAsync(Guid id)
         {
+            // Get the IQueryable<Post> from the post repository
+            var queryable = await _postRepository.GetQueryableAsync();
+
+            // Prepare a query to join post and category
+            //var query =
+            //    from post in queryable
+            //    join category in _categoryRepository on post.CategoryId equals category.Id
+            //    where post.Id = id
+
             var post = await _postRepository.GetAsync(id);
+
             return ObjectMapper.Map<Post, PostDto>(post);
         }
 

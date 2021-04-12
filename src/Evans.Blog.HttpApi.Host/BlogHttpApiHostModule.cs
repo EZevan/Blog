@@ -20,6 +20,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
+using Volo.Abp.AspNetCore.Mvc.Conventions;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
@@ -99,14 +100,20 @@ namespace Evans.Blog
                 options.ConventionalControllers.Create(typeof(BlogApplicationModule).Assembly, opts =>
                 {
                     opts.RootPath = "evans-blog";
-                    
+
                     // By default,auto api controller name will be converted to kebab-case,rather than camel-case.
                     // Here customizing the UrlControllerNameNormalizer and UrlActionNameNormalizer options with https://github.com/Humanizr/Humanizer
                     // so that automated converting to camel-case controller name.
-                    opts.UrlControllerNameNormalizer = context => context.ControllerName?.Camelize();
-                    opts.UrlActionNameNormalizer = context => context.ActionNameInUrl?.Camelize();
+                    //opts.UseV3UrlStyle = true;
+                    //opts.UrlControllerNameNormalizer = context => context.ControllerName?.Camelize();
+                    //opts.UrlActionNameNormalizer = context => context.ActionNameInUrl?.Camelize();
                 });
             });
+
+            //Configure<AbpConventionalControllerOptions>(options =>
+            //{
+            //    options.UseV3UrlStyle = true;
+            //});
         }
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)

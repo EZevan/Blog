@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.CategoryTags;
 using Evans.Blog.CategoryTags.DomainServices;
 using Evans.Blog.CategoryTags.Repositories;
@@ -22,16 +24,16 @@ namespace Evans.Blog.ServiceImpl
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly CategoryManager _categoryManager;
-        private readonly IPostAppService _postAppService;
+        private readonly IPostRepository _postRepository;
 
         public CategoryAppService(
             ICategoryRepository categoryRepository,
             CategoryManager categoryManager,
-            IPostAppService postAppService)
+            IPostRepository postRepository)
         {
             _categoryRepository = categoryRepository;
             _categoryManager = categoryManager;
-            _postAppService = postAppService;
+            _postRepository = postRepository;
         }
 
         public async Task<CategoryDto> GetAsync(Guid id)
@@ -62,24 +64,38 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
-        public Task<IEnumerable<GetCategoryDto>> GetListGetListWithoutPaginationAsync(GetCategoryListDto input)
+        public async Task<IEnumerable<GetCategoryDto>> GetListGetListWithoutPaginationAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
                 input.Sorting = nameof(Category.CategoryName);
             }
 
-            var categories = _categoryRepository.GetListAsync(
-                input.SkipCount,
-                input.MaxResultCount,
-                input.Sorting,
-                input.Filter);
+            var results =
+                from category in _categoryRepository
+                join post in _postRepository
+                on category.Id equals post.CategoryId 
+                group category by new
+                {
+                    category.CategoryName,
+                    category.DisplayName,
+                    category.CreationTime,
+                    category.Id
+                }
+                into g
+                select new GetCategoryDto
+                {
+                    Id = g.Key.Id,
+                    CategoryName = g.Key.CategoryName,
+                    DisplayName = g.Key.DisplayName,
+                    CreationTime = g.Key.CreationTime,
+                    Count = g.Count()
+                };
 
-            
-            throw new NotImplementedException();
+            return results;
         }
 
-        [Authorize(BlogPermissions.Categories.Create)]
+        //[Authorize(BlogPermissions.Categories.Create)]
         public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
         {
             var category = await _categoryManager.CreateCategoryAsync(
