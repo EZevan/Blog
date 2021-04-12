@@ -21,7 +21,6 @@ namespace Evans.Blog.CategoryTags
         internal Category(Guid id,[NotNull]string name,string displayName) : base(id)
         {
             SetName(name);
-            CategoryName = name;
             DisplayName = displayName;
         }
 

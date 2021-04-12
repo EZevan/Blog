@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Evans.Blog.Blogs;
+using Evans.Blog.Blogs.DomainServices;
 using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.Dto;
 using Evans.Blog.Permissions;
@@ -13,15 +14,20 @@ using Volo.Abp.Domain.Repositories;
 
 namespace Evans.Blog.ServiceImpl
 {
-    [Authorize(BlogPermissions.Posts.Default)]
+    //[Authorize(BlogPermissions.Posts.Default)]
     public class PostAppService : BlogAppService, IPostAppService
     {
         private readonly IPostRepository _postRepository;
+        private readonly PostManager _postManager;
 
-        public PostAppService(IPostRepository postRepository)
+        public PostAppService(
+            IPostRepository postRepository,
+            PostManager postManager)
         {
             _postRepository = postRepository;
+            _postManager = postManager;
         }
+        
         public async Task<PostDto> GetAsync(Guid id)
         {
             var post = await _postRepository.GetAsync(id);
@@ -51,19 +57,44 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Post>,List<PostDto>>(posts));
         }
 
-        public Task<PostDto> CreateAsync(CreateUpdatePostDto input)
+        
+        //[Authorize(BlogPermissions.Posts.Create)]
+        public async Task<PostDto> CreateAsync(CreateUpdatePostDto input)
         {
-            throw new NotImplementedException();
+            var post = await _postManager.CreatePostAsync(
+                input.Title,
+                input.Avatar,
+                input.Url,
+                input.Html,
+                input.Avatar,
+                input.Markdown,
+                input.CategoryId);
+
+            await _postRepository.InsertAsync(post);
+            
+            return ObjectMapper.Map<Post, PostDto>(post);
         }
 
-        public Task UpdateAsync(Guid id, CreateUpdatePostDto input)
+        //[Authorize(BlogPermissions.Posts.Edit)]
+        public async Task UpdateAsync(Guid id, CreateUpdatePostDto input)
         {
-            throw new NotImplementedException();
+            var post = await _postRepository.GetAsync(id);
+
+            post.Title = input.Title;
+            post.Author = input.Author;
+            post.Url = input.Url;
+            post.Html = input.Html;
+            post.Avatar = input.Avatar;
+            post.Markdown = input.Markdown;
+            post.CategoryId = input.CategoryId;
+
+            await _postRepository.UpdateAsync(post);
         }
 
-        public Task DeleteAsync(Guid id)
+        //[Authorize(BlogPermissions.Posts.Delete)]
+        public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _postRepository.DeleteAsync(id);
         }
     }
 }

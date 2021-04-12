@@ -17,7 +17,7 @@ namespace Evans.Blog.ServiceImpl
     /// <summary>
     /// Category corresponding service
     /// </summary>
-    [Authorize(BlogPermissions.Categories.Default)]
+    //[Authorize(BlogPermissions.Categories.Default)]
     public class CategoryAppService : BlogAppService, ICategoryAppService
     {
         private readonly ICategoryRepository _categoryRepository;
@@ -62,7 +62,7 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
-        public Task<IEnumerable<GetCategoryDto>> GetListNonPagedAsync(GetCategoryListDto input)
+        public Task<IEnumerable<GetCategoryDto>> GetListGetListWithoutPaginationAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {

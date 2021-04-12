@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Evans.Blog.Blogs;
+using Evans.Blog.Blogs.DomainServices;
+using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.CategoryTags.DomainServices;
 using Evans.Blog.CategoryTags.Repositories;
 using Volo.Abp.Data;
@@ -12,18 +14,21 @@ namespace Evans.Blog
 {
     public class BlogDataSeedContributor : IDataSeedContributor, ITransientDependency
     {
-        private readonly IRepository<Post, Guid> _postRepository;
+        private readonly IPostRepository _postRepository;
+        private readonly PostManager _postManager;
         private readonly IGuidGenerator _guidGenerator;
         private readonly ICategoryRepository _categoryRepository;
         private readonly CategoryManager _categoryManager;
 
         public BlogDataSeedContributor(
-            IRepository<Post,Guid> postRepository, 
+            IPostRepository postRepository, 
+            PostManager postManager,
             IGuidGenerator guidGenerator,
             ICategoryRepository categoryRepository,
             CategoryManager categoryManager)
         {
             _postRepository = postRepository;
+            _postManager = postManager;
             _guidGenerator = guidGenerator;
             _categoryRepository = categoryRepository;
             _categoryManager = categoryManager;
@@ -34,17 +39,16 @@ namespace Evans.Blog
             if(await _postRepository.GetCountAsync() <= 0)
             {
                 await _postRepository.InsertAsync(
-                    new Post
-                    {
-                        Title = "The first post",
-                        Author = "evan",
-                        CategoryId = _guidGenerator.Create(),
-                        Url = "www.baidu.com",
-                        Html = "http://www.baidu.com",
-                        Avatar = "pic/tianwen01.jpg",
-                        Markdown = "It's good to have some initial data in the database before running the application. This section introduces the Data Seeding system of the ABP framework. You can skip this section if you don't want to create seed data, but it is suggested to follow it to learn this useful ABP Framework feature."
-                    },
-                    autoSave:true
+                    await _postManager.CreatePostAsync(
+                        "The first post",
+                        "evan",
+                        "www.baidu.com",
+                        "http://www.baidu.com",
+                        "pic/tianwen01.jpg",
+                        "It's good to have some initial data in the database before running the application. This section introduces the Data Seeding system of the ABP framework. You can skip this section if you don't want to create seed data, but it is suggested to follow it to learn this useful ABP Framework feature.",
+                        _guidGenerator.Create()
+                    ),
+                    true
                 );
             }
 
