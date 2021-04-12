@@ -1,5 +1,4 @@
 @page "/post"
-@page "/post/{PageNumber}"
 @using AntDesign
 @using Evans.Blog.Dto
 @using Microsoft.AspNetCore.Components
@@ -17,8 +16,7 @@ else
     <div class="post-wrap archive">
         <AntList DataSource="@Posts" ItemLayout="@ListItemLayout.Vertical" Size="large" Split="false" >
             <ChildContent Context="item">
-                <ListItem Extra=@_extra(item.Avatar)>
-                    @* <ListItem Extra="@extra" Actions="@(new[] { iconText(("start","156")),iconText(("like","156")),iconText(("message","2")) })"> *@
+                <ListItem Extra=@_extra(item.Avatar) Actions="@(new[] { iconText(("field-time",item.CreationTime.ToString("yyyy-MM-dd"))),iconText(("like","156")),iconText(("message","2")) })">
                     <ListItemMeta Description="@item.Author">
                         @* <AvatarTemplate> *@
                         @*     @avatar *@
@@ -27,9 +25,20 @@ else
                             <a href="@item.Url">@item.Title</a>
                         </TitleTemplate>
                     </ListItemMeta>
-                    <div>
-                        @item.Markdown
-                    </div>
+                    <Template >
+                        <Tooltip Title="@item.Markdown">
+                            <span>
+                                @if (item.Markdown.Length > 100)
+                                {
+                                    @string.Concat(item.Markdown.Substring(0, 100), "...")
+                                }
+                                else
+                                {
+                                    @item.Markdown
+                                }
+                            </span>
+                        </Tooltip>
+                    </Template>
                 </ListItem>
             </ChildContent>
         </AntList>
@@ -45,7 +54,7 @@ else
         RenderFragment Pagination => @<Pagination 
                                           Current=PageNumber
                                           CurrentChanged=RenderPageAsync 
-                                          PageSize=MaxResultCount
+                                          PageSize=PageSize
                                           Total=TotalCount
                                           ShowTotal=showTotal
                                           ShowSizeChanger
@@ -55,13 +64,13 @@ else
 
         readonly Func<PaginationTotalContext, string> showTotal = context => $"Total {context.Total} items";
 
-        @*RenderFragment<(string icon, string text)> iconText = context =>
-          @<Template>
+        readonly RenderFragment<(string icon, string text)> iconText = context =>
+            @<Template>
                 <Space>
-                    <SpaceItem><Icon Type="@context.icon" /></SpaceItem>
+                    <SpaceItem><Icon Type="@context.icon"/></SpaceItem>
                     <SpaceItem>@context.text</SpaceItem>
                 </Space>
-            </Template> ;*@
+            </Template>;
 
     }
 }

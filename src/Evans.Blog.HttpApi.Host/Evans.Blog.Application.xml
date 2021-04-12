@@ -21,8 +21,5 @@
             <param name="message">message parameter</param>
             <returns></returns>
         </member>
-        <member name="T:Evans.Blog.ServiceImpl.PostAppService">
-            <inheritdoc />
-        </member>
     </members>
 </doc>

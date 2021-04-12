@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Evans.Blog.Dto;
 using Volo.Abp.Application.Dtos;
@@ -11,14 +12,16 @@ namespace Evans.Blog.Services
     /// </summary>
     public interface ICategoryAppService : IApplicationService
     {
-        Task<CategoryDto> GetCategoryAsync(Guid id);
+        Task<CategoryDto> GetAsync(Guid id);
 
-        Task<PagedResultDto<CategoryDto>> GetCategoryListAsync(GetCategoryListDto input);
+        Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryListDto input);
 
-        Task<CategoryDto> CreateCategoryAsync(CreateUpdateCategoryDto input);
+        Task<IEnumerable<GetCategoryDto>> GetListNonPagedAsync(GetCategoryListDto input);
 
-        Task UpdateCategoryAsync(Guid id, CreateUpdateCategoryDto input);
+        Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input);
 
-        Task DeleteCategoryAsync(Guid id);
+        Task UpdateAsync(Guid id, CreateUpdateCategoryDto input);
+
+        Task DeleteAsync(Guid id);
     }
 }

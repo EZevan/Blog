@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Evans.Blog.EntityFrameworkCore;
 using Evans.Blog.MultiTenancy;
 using Evans.Blog.Swagger;
+using Humanizer;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -97,6 +99,12 @@ namespace Evans.Blog
                 options.ConventionalControllers.Create(typeof(BlogApplicationModule).Assembly, opts =>
                 {
                     opts.RootPath = "evans-blog";
+                    
+                    // By default,auto api controller name will be converted to kebab-case,rather than camel-case.
+                    // Here customizing the UrlControllerNameNormalizer and UrlActionNameNormalizer options with https://github.com/Humanizr/Humanizer
+                    // so that automated converting to camel-case controller name.
+                    opts.UrlControllerNameNormalizer = context => context.ControllerName?.Camelize();
+                    opts.UrlActionNameNormalizer = context => context.ActionNameInUrl?.Camelize();
                 });
             });
         }

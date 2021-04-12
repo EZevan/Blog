@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using AntDesign;
+using Evans.Blog.Consts;
 using Evans.Blog.Dto;
 using Microsoft.AspNetCore.Components;
 using Volo.Abp.Application.Dtos;
@@ -56,21 +57,21 @@ namespace Evans.Blog.Blazor.Pages.Post
             PageNumber = pageNumber;
             
             var skipCount = PageSize * (PageNumber - 1);
-            var api = $"/api/evans-blog/post?{CurrentSorting}";
+            var api = $"{ApiConsts.ApiRootPath}/post?sorting={CurrentSorting}";
 
             if (skipCount <= 0 && PageSize > 0)
             {
-                api += $"?maxResultCount={PageSize}";
+                api += $"&maxResultCount={PageSize}";
             }
 
             if(PageSize <= 0 && skipCount > 0)
             {
-                api += $"?skipCount={skipCount}";
+                api += $"&skipCount={skipCount}";
             }
 
             if(skipCount > 0 && PageSize > 0)
             {
-                api += $"?skipCount={skipCount}&maxResultCount={PageSize}";
+                api += $"&skipCount={skipCount}&maxResultCount={PageSize}";
             }
 
             Console.WriteLine($"+++++++++++++api:{api}");

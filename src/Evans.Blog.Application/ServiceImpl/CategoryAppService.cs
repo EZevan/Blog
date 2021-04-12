@@ -22,22 +22,25 @@ namespace Evans.Blog.ServiceImpl
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly CategoryManager _categoryManager;
+        private readonly IPostAppService _postAppService;
 
         public CategoryAppService(
             ICategoryRepository categoryRepository,
-            CategoryManager categoryManager)
+            CategoryManager categoryManager,
+            IPostAppService postAppService)
         {
             _categoryRepository = categoryRepository;
             _categoryManager = categoryManager;
+            _postAppService = postAppService;
         }
 
-        public async Task<CategoryDto> GetCategoryAsync(Guid id)
+        public async Task<CategoryDto> GetAsync(Guid id)
         {
             var category = await _categoryRepository.GetAsync(id);
             return ObjectMapper.Map<Category, CategoryDto>(category);
         }
 
-        public async Task<PagedResultDto<CategoryDto>> GetCategoryListAsync(GetCategoryListDto input)
+        public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
@@ -59,8 +62,25 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
+        public Task<IEnumerable<GetCategoryDto>> GetListNonPagedAsync(GetCategoryListDto input)
+        {
+            if (input.Sorting.IsNullOrWhiteSpace())
+            {
+                input.Sorting = nameof(Category.CategoryName);
+            }
+
+            var categories = _categoryRepository.GetListAsync(
+                input.SkipCount,
+                input.MaxResultCount,
+                input.Sorting,
+                input.Filter);
+
+            
+            throw new NotImplementedException();
+        }
+
         [Authorize(BlogPermissions.Categories.Create)]
-        public async Task<CategoryDto> CreateCategoryAsync(CreateUpdateCategoryDto input)
+        public async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
         {
             var category = await _categoryManager.CreateCategoryAsync(
                 input.CategoryName, 
@@ -72,7 +92,7 @@ namespace Evans.Blog.ServiceImpl
         }
 
         [Authorize(BlogPermissions.Categories.Edit)]
-        public async Task UpdateCategoryAsync(Guid id, CreateUpdateCategoryDto input)
+        public async Task UpdateAsync(Guid id, CreateUpdateCategoryDto input)
         {
             var category = await _categoryRepository.GetAsync(id);
 
@@ -87,7 +107,7 @@ namespace Evans.Blog.ServiceImpl
         }
 
         [Authorize(BlogPermissions.Categories.Delete)]
-        public async Task DeleteCategoryAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             await _categoryRepository.DeleteAsync(id);
         }
