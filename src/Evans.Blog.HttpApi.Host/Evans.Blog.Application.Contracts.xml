@@ -69,6 +69,11 @@
             Post content
             </summary>
         </member>
+        <member name="P:Evans.Blog.Dto.PostDto.CategoryName">
+            <summary>
+            Category name
+            </summary>
+        </member>
         <member name="P:Evans.Blog.Dto.PostDto.CategoryId">
             <summary>
             Category id

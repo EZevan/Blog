@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Evans.Blog.Blogs;
 using Evans.Blog.Blogs.DomainServices;
 using Evans.Blog.Blogs.Repositories;
@@ -9,6 +10,7 @@ using Evans.Blog.CategoryTags.Repositories;
 using Evans.Blog.Dto;
 using Evans.Blog.Services;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 
 namespace Evans.Blog.ServiceImpl
@@ -36,14 +38,23 @@ namespace Evans.Blog.ServiceImpl
             var queryable = await _postRepository.GetQueryableAsync();
 
             // Prepare a query to join post and category
-            //var query =
-            //    from post in queryable
-            //    join category in _categoryRepository on post.CategoryId equals category.Id
-            //    where post.Id = id
+            var query =
+                from post in queryable
+                join category in _categoryRepository on post.CategoryId equals category.Id
+                where post.Id == id
+                select new {post, category};
 
-            var post = await _postRepository.GetAsync(id);
+            // Execute the query and get the post with category
+            var queryResult = await AsyncExecuter.FirstOrDefaultAsync(query);
+            if (queryResult == null)
+            {
+                throw new EntityNotFoundException(typeof(Post), id);
+            }
 
-            return ObjectMapper.Map<Post, PostDto>(post);
+            var postDto = ObjectMapper.Map<Post, PostDto>(queryResult.post);
+            postDto.CategoryName = queryResult.category.CategoryName;
+
+            return postDto;
         }
 
         public async Task<PagedResultDto<PostDto>> GetListAsync(GetPostListDto input)

@@ -36,6 +36,11 @@ namespace Evans.Blog.Dto
         /// Post content
         /// </summary>
         public string Markdown { get; set; }
+        
+        /// <summary>
+        /// Category name
+        /// </summary>
+        public string CategoryName { get; set; }
 
         /// <summary>
         /// Category id
