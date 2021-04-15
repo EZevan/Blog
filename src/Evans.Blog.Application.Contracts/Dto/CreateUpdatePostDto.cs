@@ -48,6 +48,7 @@ namespace Evans.Blog.Dto
         /// <summary>
         /// Category id
         /// </summary>
+        [Required]
         public Guid CategoryId { get; set; }
     }
 }

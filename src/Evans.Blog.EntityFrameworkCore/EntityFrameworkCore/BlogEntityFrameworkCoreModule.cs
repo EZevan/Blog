@@ -53,6 +53,7 @@ namespace Evans.Blog.EntityFrameworkCore
                 /* The main point to change your DBMS.
                  * See also BlogMigrationsDbContextFactory for EF Core tooling. */
                 options.UseMySQL();
+                //options.Configure(c => c.UseMySQL().EnableSensitiveDataLogging());
             });
 
             // Database providers behaves differently while processing GUIDs,

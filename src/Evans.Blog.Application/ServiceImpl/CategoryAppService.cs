@@ -10,6 +10,7 @@ using Evans.Blog.Dto;
 using Evans.Blog.Permissions;
 using Evans.Blog.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -64,23 +65,27 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
-        public async Task<IEnumerable<GetCategoryDto>> GetListGetListWithoutPaginationAsync(GetCategoryListDto input)
+        public async Task<IEnumerable<GetCategoryDto>> GetGetListWithoutPaginationAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
                 input.Sorting = nameof(Category.CategoryName);
             }
 
+            var queryable = await _categoryRepository.GetQueryableAsync();
+
             var results =
-                from category in _categoryRepository
+                from category in queryable
                 join post in _postRepository
-                on category.Id equals post.CategoryId 
+                on category.Id equals post.CategoryId into temp
+                from t in temp.DefaultIfEmpty()
                 group category by new
                 {
                     category.CategoryName,
                     category.DisplayName,
                     category.CreationTime,
-                    category.Id
+                    category.Id,
+                    t.CategoryId
                 }
                 into g
                 select new GetCategoryDto
@@ -89,10 +94,10 @@ namespace Evans.Blog.ServiceImpl
                     CategoryName = g.Key.CategoryName,
                     DisplayName = g.Key.DisplayName,
                     CreationTime = g.Key.CreationTime,
-                    Count = g.Count()
+                    Count = g.Key.Id.ToString() != g.Key.CategoryId.ToString() ? 0 : g.Count()
                 };
 
-            return results;
+            return results.ToList();
         }
 
         //[Authorize(BlogPermissions.Categories.Create)]

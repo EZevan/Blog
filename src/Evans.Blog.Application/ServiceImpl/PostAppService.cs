@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
-using AutoMapper;
 using Evans.Blog.Blogs;
 using Evans.Blog.Blogs.DomainServices;
 using Evans.Blog.Blogs.Repositories;
@@ -61,23 +60,64 @@ namespace Evans.Blog.ServiceImpl
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
-                input.Sorting = nameof(Post.CreationTime) + " desc";
+                input.Sorting = nameof(Post.CreationTime) + " descending";
             }
 
+            // Get the IQueryable<Post> from the repository
+            //var postQueryable = await _postRepository.GetQueryableAsync();
+
+            // Get the IEnumerable<Post> from custom repository so that sorting,filter,paging functionality can be available.
             var posts = await _postRepository.GetListAsync(
-                input.SkipCount,
-                input.MaxResultCount,
+                input.SkipCount, 
+                input.MaxResultCount, 
                 input.Sorting,
                 input.Filter);
 
+            // Prepare a query to join post and category
+            var query =
+                from post in posts
+                join category in _categoryRepository on post.CategoryId equals category.Id
+                select new {post, category};
+
+            // Paging
+            //query = query
+            //    .Skip(input.SkipCount)
+            //    .Take(input.MaxResultCount);
+
+            // Execute the query and get a list
+            //var queryResult = await AsyncExecuter.ToListAsync(query);
+
+
+            // Convert the query result to a list of PostDto objects
+            var postDtos = query.Select(x =>
+            {
+                var postDto = ObjectMapper.Map<Post, PostDto>(x.post);
+                postDto.CategoryName = x.category.CategoryName;
+                return postDto;
+            }).ToList();
+
+            // Get the total count with another query
             var totalCount = input.Filter.IsNullOrWhiteSpace()
                 ? await _postRepository.CountAsync()
-                : await _postRepository.CountAsync(post =>
-                    post.Title.Contains(input.Filter) || post.Markdown.Contains(input.Filter));
+                : await _postRepository.CountAsync(p =>
+                    p.Title.Contains(input.Filter) || p.Markdown.Contains(input.Filter));
 
-            return new PagedResultDto<PostDto>(
-                totalCount, 
-                ObjectMapper.Map<List<Post>,List<PostDto>>(posts));
+            return new PagedResultDto<PostDto>(totalCount, postDtos);
+
+            //var posts = await _postRepository.GetListAsync(
+            //    input.SkipCount,
+            //    input.MaxResultCount,
+            //    input.Sorting,
+            //    input.Filter);
+
+            //var totalCount = input.Filter.IsNullOrWhiteSpace()
+            //    ? await _postRepository.CountAsync()
+            //    : await _postRepository.CountAsync(post =>
+            //        post.Title.Contains(input.Filter) || post.Markdown.Contains(input.Filter));
+
+            //return new PagedResultDto<PostDto>(
+            //    totalCount, 
+            //    ObjectMapper.Map<List<Post>,List<PostDto>>(posts));
         }
 
         
