@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.CategoryTags;
@@ -64,23 +65,25 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
-        public async Task<IEnumerable<GetCategoryDto>> GetListGetListWithoutPaginationAsync(GetCategoryListDto input)
+        public async Task<IEnumerable<GetCategoryDto>> GetGetListWithoutPaginationAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
                 input.Sorting = nameof(Category.CategoryName);
             }
 
-            var results =
+            var queryResults =
                 from category in _categoryRepository
                 join post in _postRepository
-                on category.Id equals post.CategoryId 
+                on category.Id equals post.CategoryId into temp
+                from t in temp.DefaultIfEmpty()
                 group category by new
                 {
                     category.CategoryName,
                     category.DisplayName,
                     category.CreationTime,
-                    category.Id
+                    category.Id,
+                    t.CategoryId
                 }
                 into g
                 select new GetCategoryDto
@@ -89,9 +92,17 @@ namespace Evans.Blog.ServiceImpl
                     CategoryName = g.Key.CategoryName,
                     DisplayName = g.Key.DisplayName,
                     CreationTime = g.Key.CreationTime,
-                    Count = g.Count()
+                    Count = g.Key.Id.ToString() != g.Key.CategoryId.ToString() ? 0 : g.Count()
                 };
 
+            var results = queryResults
+                .WhereIf(!input.Filter.IsNullOrWhiteSpace(),c => c.CategoryName.Contains(input.Filter))
+                .WhereIf(!input.Filter.IsNullOrWhiteSpace(),c => c.DisplayName.Contains(input.Filter))
+                .OrderBy(input.Sorting)
+                // .Skip(input.SkipCount)
+                // .Take(input.MaxResultCount)
+                .ToList();
+            
             return results;
         }
 

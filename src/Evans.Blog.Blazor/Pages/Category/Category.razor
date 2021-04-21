@@ -1,4 +1,31 @@
 @page "/category"
 @using AntDesign
 
-<Spin size="large" />
+@if (Categories == null)
+{
+    <Empty />
+}
+else
+{
+    <div class="post-wrap archive">
+        <h1>- Categories - </h1>
+        <Card Bordered="false" Type="inner">
+            @foreach (var category in Categories)
+            {
+                <CardGrid Hoverable="true" Style="width: 50%;text-align: left">
+                    <div>
+                        <a href="/category/@category.CategoryName/">
+                            <h3>
+                                <Icon Type="" Theme="outline"/>
+                                @category.CategoryName
+                            </h3>
+                            <small>(@category.Count)</small>
+                        </a>
+
+                    </div>
+                </CardGrid>
+            }
+        </Card>
+    </div>
+}
+

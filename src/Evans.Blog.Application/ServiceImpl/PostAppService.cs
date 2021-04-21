@@ -70,14 +70,24 @@ namespace Evans.Blog.ServiceImpl
                 input.Sorting,
                 input.Filter);
 
+            var query = from post in posts
+                join category in _categoryRepository on post.CategoryId equals category.Id
+                select new {post, category};
+
+
+            var postDtos = query.Select(p =>
+            {
+                var postDto = ObjectMapper.Map<Post, PostDto>(p.post);
+                postDto.CategoryName = p.category.CategoryName;
+                return postDto;
+            }).ToList();
+
             var totalCount = input.Filter.IsNullOrWhiteSpace()
                 ? await _postRepository.CountAsync()
                 : await _postRepository.CountAsync(post =>
                     post.Title.Contains(input.Filter) || post.Markdown.Contains(input.Filter));
 
-            return new PagedResultDto<PostDto>(
-                totalCount, 
-                ObjectMapper.Map<List<Post>,List<PostDto>>(posts));
+            return new PagedResultDto<PostDto>(totalCount, postDtos);
         }
 
         

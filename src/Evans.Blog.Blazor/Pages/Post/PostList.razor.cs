@@ -20,7 +20,7 @@ namespace Evans.Blog.Blazor.Pages.Post
 
         private int PageSize { get; set; } = LimitedResultRequestDto.DefaultMaxResultCount;
 
-        private string CurrentSorting { get; set; } = nameof(PostDto.CreationTime) + " Desc";
+        //private string CurrentSorting { get; set; } = nameof(PostDto.CreationTime) + " Desc";
 
         private int TotalPage { get; set; }
 
@@ -57,21 +57,21 @@ namespace Evans.Blog.Blazor.Pages.Post
             PageNumber = pageNumber;
             
             var skipCount = PageSize * (PageNumber - 1);
-            var api = $"{ApiConsts.ApiRootPath}/post?sorting={CurrentSorting}";
+            var api = $"{ApiConsts.ApiRootPath}/post";
 
             if (skipCount <= 0 && PageSize > 0)
             {
-                api += $"&maxResultCount={PageSize}";
+                api += $"?maxResultCount={PageSize}";
             }
 
             if(PageSize <= 0 && skipCount > 0)
             {
-                api += $"&skipCount={skipCount}";
+                api += $"?skipCount={skipCount}";
             }
 
             if(skipCount > 0 && PageSize > 0)
             {
-                api += $"&skipCount={skipCount}&maxResultCount={PageSize}";
+                api += $"?skipCount={skipCount}&maxResultCount={PageSize}";
             }
 
             Console.WriteLine($"+++++++++++++api:{api}");
