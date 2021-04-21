@@ -60,7 +60,7 @@ namespace Evans.Blog.ServiceImpl
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
-                input.Sorting = nameof(Post.CreationTime) + " descending";
+                input.Sorting = nameof(Post.CreationTime) + " desc";
             }
 
             // Get the IQueryable<Post> from the repository
@@ -118,6 +118,7 @@ namespace Evans.Blog.ServiceImpl
             //return new PagedResultDto<PostDto>(
             //    totalCount, 
             //    ObjectMapper.Map<List<Post>,List<PostDto>>(posts));
+
         }
 
         

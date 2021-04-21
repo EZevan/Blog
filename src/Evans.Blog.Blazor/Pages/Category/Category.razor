@@ -1,4 +1,35 @@
 @page "/category"
 @using AntDesign
 
-<Spin size="large" />
+@if (Categories == null)
+{
+    <Empty />
+}
+else
+{
+    <div class="post-wrap archive">
+        
+        <div>
+            <h1 style="margin-bottom: 40px;display: inline-block">- Categories - </h1>
+            <Search style="float: right; margin-top: 6px;width: 50%" Placeholder="Please input" @bind-value="@CurrentFilter" OnPressEnter="e => OnSearchAsync()" />
+        </div>
+        <Card Bordered="false" Type="inner">
+            @foreach (var category in Categories)
+            {
+                <CardGrid Hoverable="true" Style="width: 50%;text-align: left">
+                    <div>
+                        <a href="/category/@category.CategoryName/">
+                            <h3>
+                                <Icon Type="" Theme="outline"/>
+                                @category.CategoryName
+                            </h3>
+                            <small>(@category.Count)</small>
+                        </a>
+
+                    </div>
+                </CardGrid>
+            }
+        </Card>
+    </div>
+}
+

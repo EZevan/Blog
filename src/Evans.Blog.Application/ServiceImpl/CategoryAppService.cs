@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.CategoryTags;
@@ -72,9 +73,10 @@ namespace Evans.Blog.ServiceImpl
                 input.Sorting = nameof(Category.CategoryName);
             }
 
+            //
             var queryable = await _categoryRepository.GetQueryableAsync();
 
-            var results =
+            var queryResults =
                 from category in queryable
                 join post in _postRepository
                 on category.Id equals post.CategoryId into temp
@@ -97,7 +99,15 @@ namespace Evans.Blog.ServiceImpl
                     Count = g.Key.Id.ToString() != g.Key.CategoryId.ToString() ? 0 : g.Count()
                 };
 
-            return results.ToList();
+            var results = queryResults
+                .WhereIf(!input.Filter.IsNullOrWhiteSpace(),
+                    c => c.CategoryName.Contains(input.Filter) || c.DisplayName.Contains(input.Filter))
+                .OrderBy(input.Sorting)
+                // .Skip(input.SkipCount)
+                // .Take(input.MaxResultCount)
+                .ToList();
+            
+            return results;
         }
 
         //[Authorize(BlogPermissions.Categories.Create)]
