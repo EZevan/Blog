@@ -66,6 +66,7 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
+        [Route("/getListWithoutPagination")]
         public async Task<IEnumerable<GetCategoryDto>> GetGetListWithoutPaginationAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
@@ -73,7 +74,7 @@ namespace Evans.Blog.ServiceImpl
                 input.Sorting = nameof(Category.CategoryName);
             }
 
-            //
+            
             var queryable = await _categoryRepository.GetQueryableAsync();
 
             var queryResults =
