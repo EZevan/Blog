@@ -12,6 +12,7 @@ using Evans.Blog.Permissions;
 using Evans.Blog.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -44,6 +45,9 @@ namespace Evans.Blog.ServiceImpl
             return ObjectMapper.Map<Category, CategoryDto>(category);
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
+        [RemoteService(IsMetadataEnabled = false)]
+        [NonAction]
         public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
@@ -66,8 +70,9 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
-        [Route("/getListWithoutPagination")]
-        public async Task<IEnumerable<GetCategoryDto>> GetGetListWithoutPaginationAsync(GetCategoryListDto input)
+        [ActionName(nameof(GetListWithoutPaginationAsync))]
+        //[Route("[controller]/[action]")]
+        public async Task<IEnumerable<GetCategoryDto>> GetListWithoutPaginationAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {

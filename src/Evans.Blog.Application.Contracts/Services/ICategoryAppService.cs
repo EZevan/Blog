@@ -16,7 +16,7 @@ namespace Evans.Blog.Services
 
         Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryListDto input);
 
-        Task<IEnumerable<GetCategoryDto>> GetGetListWithoutPaginationAsync(GetCategoryListDto input);
+        Task<IEnumerable<GetCategoryDto>> GetListWithoutPaginationAsync(GetCategoryListDto input);
 
         Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input);
 
