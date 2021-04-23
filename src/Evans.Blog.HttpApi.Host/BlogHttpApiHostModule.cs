@@ -96,6 +96,12 @@ namespace Evans.Blog
 
         private void ConfigureConventionalControllers()
         {
+            // Set UseV3UrlStyle to true for the AbpConventionalControllerOptions to set it globally
+            Configure<AbpConventionalControllerOptions>(options =>
+            {
+                options.UseV3UrlStyle = true;
+            });
+
             Configure<AbpAspNetCoreMvcOptions>(options =>
             {
                 options.ConventionalControllers.Create(typeof(BlogApplicationModule).Assembly, opts =>
@@ -105,37 +111,11 @@ namespace Evans.Blog
                     // By default,auto api controller name will be converted to kebab-case,rather than camel-case.
                     // Here customizing the UrlControllerNameNormalizer and UrlActionNameNormalizer options with https://github.com/Humanizr/Humanizer
                     // so that automated converting to camel-case controller name.
-                    opts.UseV3UrlStyle = true;
-                    opts.UrlControllerNameNormalizer = context => context.ControllerName?.ToCamelCase();
-                    opts.UrlActionNameNormalizer = context =>
-                    {
-                        Console.WriteLine("ControllerName :" + context.ControllerName);
-                        Console.WriteLine("ActionNameInUrl :" + context.ActionNameInUrl);
-                        Console.WriteLine("ActionMethod :" + context.Action.ActionMethod.Name);
-                        Console.WriteLine("ActionName :" + context.Action.ActionName);
-                        Console.WriteLine("DisplayName :" + context.Action.DisplayName);
-
-                        var name = context.Action.ActionName?.ToCamelCase();
-                        Console.WriteLine("name :" + name);
-                        return name;
-                    };
-
-                    // opts.UrlActionNameNormalizer = context =>
-                    // {
-                    //     if (context.Action.ActionName.Contains("Get"))
-                    //     {
-                    //         return context.Action.ActionName;
-                    //     }
-                    //
-                    //     return context.ActionNameInUrl;
-                    // };
+                    //opts.UseV3UrlStyle = true;
+                    opts.UrlControllerNameNormalizer = context => context.ControllerName;
+                    opts.UrlActionNameNormalizer = context => context.Action.ActionName;
                 });
             });
-
-            //Configure<AbpConventionalControllerOptions>(options =>
-            //{
-            //    options.UseV3UrlStyle = true;
-            //});
         }
 
         private void ConfigureAuthentication(ServiceConfigurationContext context, IConfiguration configuration)
@@ -233,7 +213,7 @@ namespace Evans.Blog
         {
             context.Services.AddRouting(options =>
             {
-                options.LowercaseUrls = true;
+                options.LowercaseUrls = false;
                 options.AppendTrailingSlash = true;
             });
         }
