@@ -44,10 +44,7 @@ namespace Evans.Blog.ServiceImpl
             var category = await _categoryRepository.GetAsync(id);
             return ObjectMapper.Map<Category, CategoryDto>(category);
         }
-
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [RemoteService(IsMetadataEnabled = false)]
-        [NonAction]
+        
         public async Task<PagedResultDto<CategoryDto>> GetListAsync(GetCategoryListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
@@ -70,7 +67,7 @@ namespace Evans.Blog.ServiceImpl
                 ObjectMapper.Map<List<Category>, List<CategoryDto>>(categories));
         }
 
-        [ActionName(nameof(GetListWithoutPaginationAsync))]
+        //[ActionName(nameof(GetListWithoutPaginationAsync))]
         //[Route("[controller]/[action]")]
         public async Task<IEnumerable<GetCategoryDto>> GetListWithoutPaginationAsync(GetCategoryListDto input)
         {

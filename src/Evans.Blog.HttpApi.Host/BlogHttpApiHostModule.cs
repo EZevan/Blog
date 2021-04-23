@@ -15,6 +15,7 @@ using Evans.Blog.EntityFrameworkCore;
 using Evans.Blog.MultiTenancy;
 using Evans.Blog.Swagger;
 using Humanizer;
+using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
@@ -104,9 +105,30 @@ namespace Evans.Blog
                     // By default,auto api controller name will be converted to kebab-case,rather than camel-case.
                     // Here customizing the UrlControllerNameNormalizer and UrlActionNameNormalizer options with https://github.com/Humanizr/Humanizer
                     // so that automated converting to camel-case controller name.
-                    //opts.UseV3UrlStyle = true;
-                    //opts.UrlControllerNameNormalizer = context => context.ControllerName?.Camelize();
-                    //opts.UrlActionNameNormalizer = context => context.ActionNameInUrl?.Camelize();
+                    opts.UseV3UrlStyle = true;
+                    opts.UrlControllerNameNormalizer = context => context.ControllerName?.ToCamelCase();
+                    opts.UrlActionNameNormalizer = context =>
+                    {
+                        Console.WriteLine("ControllerName :" + context.ControllerName);
+                        Console.WriteLine("ActionNameInUrl :" + context.ActionNameInUrl);
+                        Console.WriteLine("ActionMethod :" + context.Action.ActionMethod.Name);
+                        Console.WriteLine("ActionName :" + context.Action.ActionName);
+                        Console.WriteLine("DisplayName :" + context.Action.DisplayName);
+
+                        var name = context.Action.ActionName?.ToCamelCase();
+                        Console.WriteLine("name :" + name);
+                        return name;
+                    };
+
+                    // opts.UrlActionNameNormalizer = context =>
+                    // {
+                    //     if (context.Action.ActionName.Contains("Get"))
+                    //     {
+                    //         return context.Action.ActionName;
+                    //     }
+                    //
+                    //     return context.ActionNameInUrl;
+                    // };
                 });
             });
 
