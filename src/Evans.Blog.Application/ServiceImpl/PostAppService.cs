@@ -79,13 +79,13 @@ namespace Evans.Blog.ServiceImpl
                 join category in _categoryRepository on post.CategoryId equals category.Id
                 select new {post, category};
 
-            // Paging
-            //query = query
-            //    .Skip(input.SkipCount)
-            //    .Take(input.MaxResultCount);
+            //Paging
+            // query = query
+            //     .Skip(input.SkipCount)
+            //     .Take(input.MaxResultCount);
 
             // Execute the query and get a list
-            //var queryResult = await AsyncExecuter.ToListAsync(query);
+            // var queryResult = await AsyncExecuter.ToListAsync(query);
 
 
             // Convert the query result to a list of PostDto objects
@@ -103,22 +103,6 @@ namespace Evans.Blog.ServiceImpl
                     p.Title.Contains(input.Filter) || p.Markdown.Contains(input.Filter));
 
             return new PagedResultDto<PostDto>(totalCount, postDtos);
-
-            //var posts = await _postRepository.GetListAsync(
-            //    input.SkipCount,
-            //    input.MaxResultCount,
-            //    input.Sorting,
-            //    input.Filter);
-
-            //var totalCount = input.Filter.IsNullOrWhiteSpace()
-            //    ? await _postRepository.CountAsync()
-            //    : await _postRepository.CountAsync(post =>
-            //        post.Title.Contains(input.Filter) || post.Markdown.Contains(input.Filter));
-
-            //return new PagedResultDto<PostDto>(
-            //    totalCount, 
-            //    ObjectMapper.Map<List<Post>,List<PostDto>>(posts));
-
         }
 
         
