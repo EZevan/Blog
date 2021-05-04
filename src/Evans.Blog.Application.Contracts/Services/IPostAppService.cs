@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Evans.Blog.Domain.Shared.Dto;
 using Evans.Blog.Dto;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -12,14 +13,14 @@ namespace Evans.Blog.Services
     /// </summary>
     public interface IPostAppService : IApplicationService
     {
-        Task<PostDto> GetAsync(Guid id);
+        Task<ServiceResult<PostDto>> GetAsync(Guid id);
 
-        Task<PagedResultDto<PostDto>> GetListAsync(GetPostListDto input);
+        Task<ServiceResult<PagedResultDto<PostDto>>> GetListAsync(GetPostListDto input);
 
-        Task<PostDto> CreateAsync(CreateUpdatePostDto input);
+        Task<ServiceResult<PostDto>> CreateAsync(CreateUpdatePostDto input);
 
-        Task UpdateAsync(Guid id, CreateUpdatePostDto input);
+        Task<ServiceResult<string>> UpdateAsync(Guid id, CreateUpdatePostDto input);
 
-        Task DeleteAsync(Guid id);
+        Task<ServiceResult<string>> DeleteAsync(Guid id);
     }
 }

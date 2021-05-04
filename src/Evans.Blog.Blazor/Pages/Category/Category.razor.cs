@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Evans.Blog.Consts;
+using Evans.Blog.Domain.Shared.Dto;
 using Evans.Blog.Dto;
 using Microsoft.AspNetCore.Components;
 using Volo.Abp.Application.Dtos;
@@ -36,7 +37,7 @@ namespace Evans.Blog.Blazor.Pages.Category
         private async Task RenderPageAsync()
         {
             //var skipCount = PageSize * (PageNumber - 1);
-            var api = $"{ApiConsts.ApiRootPath}/category/get-list-without-pagination";
+            var api = $"{ApiConsts.ApiRootPath}/category/getListWithoutPagination";
 
             if (!CurrentSorting.IsNullOrWhiteSpace() && CurrentFilter.IsNullOrWhiteSpace())
             {
@@ -53,7 +54,9 @@ namespace Evans.Blog.Blazor.Pages.Category
                 api += $"?sorting={CurrentSorting}&filter={CurrentFilter}";
             }
 
-            Categories = await HttpClient.GetFromJsonAsync<List<GetCategoryDto>>(api);
+            var result = await HttpClient.GetFromJsonAsync<ServiceResult<List<GetCategoryDto>>>(api);
+
+            Categories = result.Data;
         }
 
         private async Task OnSearchAsync()

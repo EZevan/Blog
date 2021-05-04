@@ -6,6 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using AntDesign;
 using Evans.Blog.Consts;
+using Evans.Blog.Domain.Shared.Dto;
 using Evans.Blog.Dto;
 using Microsoft.AspNetCore.Components;
 using Volo.Abp.Application.Dtos;
@@ -57,7 +58,7 @@ namespace Evans.Blog.Blazor.Pages.Post
             PageNumber = pageNumber;
             
             var skipCount = PageSize * (PageNumber - 1);
-            var api = $"{ApiConsts.ApiRootPath}/post";
+            var api = $"{ApiConsts.ApiRootPath}/post/getList";
 
             if (skipCount <= 0 && PageSize > 0)
             {
@@ -76,12 +77,12 @@ namespace Evans.Blog.Blazor.Pages.Post
 
             Console.WriteLine($"+++++++++++++api:{api}");
             
-            var postDtoPagedResultDto = await HttpClient.GetFromJsonAsync<PagedResultDto<PostDto>>(api);
+            var result = await HttpClient.GetFromJsonAsync<ServiceResult<PagedResultDto<PostDto>>>(api);
 
-            if(postDtoPagedResultDto != null)
+            if(result != null)
             {
-                Posts = postDtoPagedResultDto.Items;
-                TotalCount = (int)postDtoPagedResultDto.TotalCount;
+                Posts = result.Data.Items;
+                TotalCount = (int)result.Data.TotalCount;
             }
 
             TotalPage = (int)Math.Ceiling((double)TotalCount / PageSize);

@@ -6,6 +6,7 @@ using Evans.Blog.Blogs;
 using Evans.Blog.Blogs.DomainServices;
 using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.CategoryTags.Repositories;
+using Evans.Blog.Domain.Shared.Dto;
 using Evans.Blog.Dto;
 using Evans.Blog.Services;
 using Volo.Abp.Application.Dtos;
@@ -31,8 +32,10 @@ namespace Evans.Blog.ServiceImpl
             _categoryRepository = categoryRepository;
         }
         
-        public async Task<PostDto> GetAsync(Guid id)
+        public async Task<ServiceResult<PostDto>> GetAsync(Guid id)
         {
+            var result = new ServiceResult<PostDto>();
+            
             // Get the IQueryable<Post> from the post repository
             var queryable = await _postRepository.GetQueryableAsync();
 
@@ -53,11 +56,13 @@ namespace Evans.Blog.ServiceImpl
             var postDto = ObjectMapper.Map<Post, PostDto>(queryResult.post);
             postDto.CategoryName = queryResult.category.CategoryName;
 
-            return postDto;
+            return result.IsSuccess(postDto);
         }
 
-        public async Task<PagedResultDto<PostDto>> GetListAsync(GetPostListDto input)
+        public async Task<ServiceResult<PagedResultDto<PostDto>>> GetListAsync(GetPostListDto input)
         {
+            var result = new ServiceResult<PagedResultDto<PostDto>>();
+            
             if (input.Sorting.IsNullOrWhiteSpace())
             {
                 input.Sorting = nameof(Post.CreationTime) + " desc";
@@ -102,13 +107,15 @@ namespace Evans.Blog.ServiceImpl
                 : await _postRepository.CountAsync(p =>
                     p.Title.Contains(input.Filter) || p.Markdown.Contains(input.Filter));
 
-            return new PagedResultDto<PostDto>(totalCount, postDtos);
+            return result.IsSuccess(new PagedResultDto<PostDto>(totalCount, postDtos));
         }
 
         
         //[Authorize(BlogPermissions.Posts.Create)]
-        public async Task<PostDto> CreateAsync(CreateUpdatePostDto input)
+        public async Task<ServiceResult<PostDto>> CreateAsync(CreateUpdatePostDto input)
         {
+            var result = new ServiceResult<PostDto>();
+            
             var post = await _postManager.CreatePostAsync(
                 input.Title,
                 input.Avatar,
@@ -120,12 +127,13 @@ namespace Evans.Blog.ServiceImpl
 
             await _postRepository.InsertAsync(post);
             
-            return ObjectMapper.Map<Post, PostDto>(post);
+            return result.IsSuccess(ObjectMapper.Map<Post, PostDto>(post));
         }
 
         //[Authorize(BlogPermissions.Posts.Edit)]
-        public async Task UpdateAsync(Guid id, CreateUpdatePostDto input)
+        public async Task<ServiceResult<string>> UpdateAsync(Guid id, CreateUpdatePostDto input)
         {
+            var result = new ServiceResult<string>();
             var post = await _postRepository.GetAsync(id);
 
             post.Title = input.Title;
@@ -137,12 +145,17 @@ namespace Evans.Blog.ServiceImpl
             post.CategoryId = input.CategoryId;
 
             await _postRepository.UpdateAsync(post);
+
+            return result.IsSuccess();
         }
 
         //[Authorize(BlogPermissions.Posts.Delete)]
-        public async Task DeleteAsync(Guid id)
+        public async Task<ServiceResult<string>> DeleteAsync(Guid id)
         {
+            var result = new ServiceResult<string>();
             await _postRepository.DeleteAsync(id);
+
+            return result.IsSuccess();
         }
     }
 }
