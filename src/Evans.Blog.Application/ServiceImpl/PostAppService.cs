@@ -118,7 +118,7 @@ namespace Evans.Blog.ServiceImpl
             
             var post = await _postManager.CreatePostAsync(
                 input.Title,
-                input.Avatar,
+                input.Author,
                 input.Url,
                 input.Html,
                 input.Avatar,

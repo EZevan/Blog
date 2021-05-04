@@ -77,12 +77,12 @@ namespace Evans.Blog.Blazor.Pages.Post
 
             Console.WriteLine($"+++++++++++++api:{api}");
             
-            var result = await HttpClient.GetFromJsonAsync<ServiceResult<PagedResultDto<PostDto>>>(api);
-
-            if(result != null)
+            var postDtoPagedResultDto = await HttpClient.GetFromJsonAsync<ServiceResult<PagedResultDto<PostDto>>>(api);
+            
+            if(postDtoPagedResultDto != null)
             {
-                Posts = result.Data.Items;
-                TotalCount = (int)result.Data.TotalCount;
+                Posts = postDtoPagedResultDto.Data.Items;
+                TotalCount = (int)postDtoPagedResultDto.Data.TotalCount;
             }
 
             TotalPage = (int)Math.Ceiling((double)TotalCount / PageSize);
