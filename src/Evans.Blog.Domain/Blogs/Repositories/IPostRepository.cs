@@ -8,6 +8,8 @@ namespace Evans.Blog.Blogs.Repositories
 {
     public interface IPostRepository : IRepository<Post, Guid>
     {
+        Task<Post> FindByTitleAuthorContentAsync(string title,string author,string content);
+
         Task<List<Post>> GetListAsync(
             int skipCount,
             int maxResultCount,

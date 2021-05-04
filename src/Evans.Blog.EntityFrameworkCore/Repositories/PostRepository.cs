@@ -19,6 +19,14 @@ namespace Evans.Blog.Repositories
         {
         }
 
+        public async Task<Post> FindByTitleAuthorContentAsync(string title, string author, string content)
+        {
+            var dbSet = await GetDbSetAsync();
+
+            return await dbSet.FirstOrDefaultAsync(post =>
+                post.Title == title && post.Author == author && post.Markdown == content);
+        }
+
         public async Task<List<Post>> GetListAsync(int skipCount, int maxResultCount, string sorting, string filter)
         {
             var dbSet = await GetDbSetAsync();

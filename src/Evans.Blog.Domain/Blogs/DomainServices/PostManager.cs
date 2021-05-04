@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Evans.Blog.Blogs.Exception;
 using Evans.Blog.Blogs.Repositories;
+using Evans.Blog.CategoryTags.Exception;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
@@ -19,6 +21,12 @@ namespace Evans.Blog.Blogs.DomainServices
             Guid categoryId)
         {
             Check.NotNullOrWhiteSpace(title,nameof(title));
+
+            var existingPost = await _postRepository.FindByTitleAuthorContentAsync(title, author, markdown);
+            if (existingPost != null)
+            {
+                throw new PostAlreadyExistingException(title,author,markdown);
+            }
 
             return new Post(
                 GuidGenerator.Create(), title, author, url, html, avatar, markdown, categoryId);

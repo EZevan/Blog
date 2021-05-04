@@ -11,14 +11,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Evans.Blog.EntityFrameworkCore;
+using Evans.Blog.Filters;
 using Evans.Blog.MultiTenancy;
-using Evans.Blog.Swagger;
+using Microsoft.AspNetCore.Mvc;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.Conventions;
+using Volo.Abp.AspNetCore.Mvc.ExceptionHandling;
 using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
@@ -60,6 +62,19 @@ namespace Evans.Blog
             ConfigureCors(context, configuration);
             ConfigureSwaggerServices(context, configuration);
             ConfigureRouting(context);
+            ConfigureCustomException();
+        }
+
+        private void ConfigureCustomException()
+        {
+            Configure<MvcOptions>(options =>
+            {
+                var filterMetadata = options.Filters.FirstOrDefault(x =>
+                    x is ServiceFilterAttribute attr && attr.ServiceType == typeof(AbpExceptionFilter));
+
+                options.Filters.Remove(filterMetadata);
+                options.Filters.Add(typeof(CustomExceptionFilter));
+            });
         }
 
         private void ConfigureCache(IConfiguration configuration)

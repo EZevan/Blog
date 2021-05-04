@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Evans.Blog.Swagger
+namespace Evans.Blog.Filters
 {
     /// <summary>
     /// The filter of swagger document tags
