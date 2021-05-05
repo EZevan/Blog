@@ -83,7 +83,7 @@ namespace Evans.Blog.Domain.Shared.Dto
         /// <param name="errorMessage">Error message</param>
         public ServiceResult<T> IsFailure(T data = null, string errorCode = null, string errorMessage = null)
         {
-            Success = true;
+            Success = false;
             Data = data;
             Errors = new List<ErrorInfo>
             {
@@ -110,7 +110,7 @@ namespace Evans.Blog.Domain.Shared.Dto
         /// <param name="errorInfos">Error information collections</param>
         public ServiceResult<T> IsFailure(T data = null, IList<ErrorInfo> errorInfos = null)
         {
-            Success = true;
+            Success = false;
             Data = data;
             Errors = errorInfos;
 

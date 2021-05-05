@@ -71,9 +71,8 @@ namespace Evans.Blog
             {
                 var filterMetadata = options.Filters.FirstOrDefault(x =>
                     x is ServiceFilterAttribute attr && attr.ServiceType == typeof(AbpExceptionFilter));
-
-                options.Filters.Remove(filterMetadata);
-                options.Filters.Add(typeof(CustomExceptionFilter));
+                //options.Filters.Remove(filterMetadata);
+                //options.Filters.Add(typeof(CustomExceptionFilter));
             });
         }
 

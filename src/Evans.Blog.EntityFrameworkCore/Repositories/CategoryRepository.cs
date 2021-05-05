@@ -21,7 +21,7 @@ namespace Evans.Blog.Repositories
         public async Task<Category> FindByNameAsync(string name)
         {
             var dbSet = await GetDbSetAsync();
-            return await dbSet.FirstOrDefaultAsync(category => category.CategoryName == name);
+            return await dbSet.FirstOrDefaultAsync(category => string.Equals(category.CategoryName, name, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public async Task<List<Category>> GetListAsync(int skipCount, int maxResultCount, string sorting,

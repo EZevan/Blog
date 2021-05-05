@@ -15,10 +15,7 @@ namespace Evans.Blog.Filters
     {
         public async void OnException(ExceptionContext context)
         {
-            Log.Logger.Error(
-                context.Exception,
-                context.Exception.InnerException?.StackTrace,
-                context.Exception.Source);
+            Log.Logger.Error(context.Exception,context.Exception.Message);
 
             await ExceptionHandlerAsync(context.HttpContext, Code, Message);
         }
