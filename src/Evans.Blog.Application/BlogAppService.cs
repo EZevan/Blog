@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Evans.Blog.Localization;
+using Microsoft.Extensions.Caching.Distributed;
 using Volo.Abp.Application.Services;
 
 namespace Evans.Blog
