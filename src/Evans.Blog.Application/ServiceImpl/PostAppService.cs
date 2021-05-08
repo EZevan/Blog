@@ -6,9 +6,12 @@ using Evans.Blog.Blogs;
 using Evans.Blog.Blogs.DomainServices;
 using Evans.Blog.Blogs.Repositories;
 using Evans.Blog.CategoryTags.Repositories;
+using Evans.Blog.Consts;
 using Evans.Blog.Domain.Shared.Dto;
 using Evans.Blog.Dto;
 using Evans.Blog.Services;
+using Microsoft.Extensions.Caching.Distributed;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
@@ -35,28 +38,14 @@ namespace Evans.Blog.ServiceImpl
         public async Task<ServiceResult<PostDto>> GetAsync(Guid id)
         {
             var result = new ServiceResult<PostDto>();
-            
-            // Get the IQueryable<Post> from the post repository
-            var queryable = await _postRepository.GetQueryableAsync();
 
-            // Prepare a query to join post and category
-            var query =
-                from post in queryable
-                join category in _categoryRepository on post.CategoryId equals category.Id
-                where post.Id == id
-                select new {post, category};
-
-            // Execute the query and get the post with category
-            var queryResult = await AsyncExecuter.FirstOrDefaultAsync(query);
-            if (queryResult == null)
-            {
-                throw new EntityNotFoundException(typeof(Post), id);
-            }
-
-            var postDto = ObjectMapper.Map<Post, PostDto>(queryResult.post);
-            postDto.CategoryName = queryResult.category.CategoryName;
-
-            return result.IsSuccess(postDto);
+            return await Cache4PostDto.GetOrAddAsync(
+                id.ToString(),
+                async () => await GetAsync(id, result),
+                () => new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.AddHours(CacheStrategyConst.ONE_DAY)
+                });
         }
 
         public async Task<ServiceResult<PagedResultDto<PostDto>>> GetListAsync(GetPostListDto input)
@@ -156,6 +145,31 @@ namespace Evans.Blog.ServiceImpl
             await _postRepository.DeleteAsync(id);
 
             return result.IsSuccess();
+        }
+
+        private async Task<ServiceResult<PostDto>> GetAsync(Guid id,ServiceResult<PostDto> result)
+        {
+            // Get the IQueryable<Post> from the post repository
+            var queryable = await _postRepository.GetQueryableAsync();
+
+            // Prepare a query to join post and category
+            var query =
+                from post in queryable
+                join category in _categoryRepository on post.CategoryId equals category.Id
+                where post.Id == id
+                select new {post, category};
+
+            // Execute the query and get the post with category
+            var queryResult = await AsyncExecuter.FirstOrDefaultAsync(query);
+            if (queryResult == null)
+            {
+                throw new EntityNotFoundException(typeof(Post), id);
+            }
+
+            var postDto = ObjectMapper.Map<Post, PostDto>(queryResult.post);
+            postDto.CategoryName = queryResult.category.CategoryName;
+
+            return result.IsSuccess(postDto);
         }
     }
 }
