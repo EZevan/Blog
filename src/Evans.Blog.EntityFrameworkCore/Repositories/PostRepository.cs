@@ -32,8 +32,7 @@ namespace Evans.Blog.Repositories
             var dbSet = await GetDbSetAsync();
 
             return await dbSet
-                .WhereIf(!filter.IsNullOrWhiteSpace(), post => post.Title.Contains(filter))
-                .WhereIf(!filter.IsNullOrWhiteSpace(), post => post.Markdown.Contains(filter))
+                .WhereIf(!filter.IsNullOrWhiteSpace(), post => post.Title.Contains(filter) || post.Markdown.Contains(filter))
                 .OrderBy(sorting)
                 .Skip(skipCount)
                 .Take(maxResultCount)

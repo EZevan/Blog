@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Volo.Abp.Caching;
 using Volo.Abp.Identity;
 
 namespace Evans.Blog.Domain.Shared.Dto
@@ -7,6 +8,7 @@ namespace Evans.Blog.Domain.Shared.Dto
     /// <summary>
     /// The response entity of application service layer.
     /// </summary>
+    [CacheName("serviceResult")]
     public class ServiceResult<T> where T : class
     {
         public const string ServerError = "500";

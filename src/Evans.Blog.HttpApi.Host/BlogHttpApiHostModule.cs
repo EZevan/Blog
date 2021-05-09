@@ -14,6 +14,8 @@ using Evans.Blog.EntityFrameworkCore;
 using Evans.Blog.Filters;
 using Evans.Blog.MultiTenancy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
@@ -79,9 +81,14 @@ namespace Evans.Blog
 
         private void ConfigureCache(IConfiguration configuration)
         {
-            Configure<AbpDistributedCacheOptions>(options =>
+            // Configure<AbpDistributedCacheOptions>(options =>
+            // {
+            //     options.KeyPrefix = "Blog:";
+            // });
+            
+            Configure<RedisCacheOptions>(options =>
             {
-                options.KeyPrefix = "Blog:";
+                options.InstanceName = "blog:";
             });
         }
 

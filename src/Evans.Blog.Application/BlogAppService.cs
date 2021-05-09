@@ -17,6 +17,9 @@ namespace Evans.Blog
     {
         public IDistributedCache<ServiceResult<PostDto>> Cache4PostDto { get; set; }
         public IDistributedCache<ServiceResult<PagedResultDto<PostDto>>> Cache4PagedResultDtoPostDto { get; set; }
+        public IDistributedCache<ServiceResult<CategoryDto>> Cache4CategoryDto { get; set; }
+        public IDistributedCache<ServiceResult<PagedResultDto<CategoryDto>>> Cache4PagedResultDtoCategoryDto { get; set; }
+        public IDistributedCache<ServiceResult<IEnumerable<GetCategoryDto>>> Cache4GetCategoryDto { get; set; }
         public IDistributedCache<ServiceResult<string>> Cache4String { get; set; }
 
         protected BlogAppService()
