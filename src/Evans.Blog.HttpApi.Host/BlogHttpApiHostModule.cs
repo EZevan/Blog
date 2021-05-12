@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Evans.Blog.BackgroundJobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
@@ -47,7 +48,7 @@ namespace Evans.Blog
         typeof(BlogEntityFrameworkCoreDbMigrationsModule),
         typeof(AbpAspNetCoreSerilogModule),
         typeof(AbpSwashbuckleModule),
-        typeof(AbpBackgroundJobsModule)
+        typeof(BlogBackgroundJobsModule)
     )]
     public class BlogHttpApiHostModule : AbpModule
     {

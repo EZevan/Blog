@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Evans.Blog.Application\Evans.Blog.Application.csproj" />
+    <ProjectReference Include="..\Evans.Blog.BackgroundJobs\Evans.Blog.BackgroundJobs.csproj" />
     <ProjectReference Include="..\Evans.Blog.EntityFrameworkCore.DbMigrations\Evans.Blog.EntityFrameworkCore.DbMigrations.csproj" />
     <ProjectReference Include="..\Evans.Blog.HttpApi\Evans.Blog.HttpApi.csproj" />
   </ItemGroup>
