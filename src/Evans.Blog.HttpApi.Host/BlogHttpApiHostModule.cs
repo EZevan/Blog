@@ -14,9 +14,9 @@ using Microsoft.Extensions.Hosting;
 using Evans.Blog.EntityFrameworkCore;
 using Evans.Blog.Filters;
 using Evans.Blog.MultiTenancy;
+using Hangfire;
+using Hangfire.MySql;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using StackExchange.Redis;
 using Microsoft.OpenApi.Models;
@@ -29,8 +29,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
-using Volo.Abp.BackgroundJobs;
-using Volo.Abp.Caching;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -69,8 +67,60 @@ namespace Evans.Blog
             ConfigureSwaggerServices(context, configuration);
             ConfigureRouting(context);
             ConfigureCustomException();
+            ConfigureHangfire(context, configuration);
         }
 
+        
+        private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
+        {
+            context.Services.AddHangfire(config =>
+            {
+                config.UseStorage(
+                    new MySqlStorage(
+                        configuration.GetConnectionString("Default"),
+                        new MySqlStorageOptions
+                        {
+                            TablesPrefix = BlogConsts.DbTablePrefix + "hangfire_"
+                        })
+                );
+            });
+            
+            // Configures Hangfire server options
+            // Configure<BackgroundJobServerOptions>(options =>
+            // {
+            //     // Queue name
+            //     //options.Queues = new[] {"test1", "test2"};
+            //     // Wait for all jobs performed when background server shutdown.
+            //     options.ShutdownTimeout = TimeSpan.FromMinutes(30);
+            //     // Concurrent job counts, default is 20.
+            //     options.WorkerCount = Math.Max(Environment.ProcessorCount, 20);
+            // });
+            
+            // Configures Hangfire dashboard options
+            // Configure<DashboardOptions>(options =>
+            // {
+            //     options.Authorization = new[]
+            //     {
+            //         new BasicAuthAuthorizationFilter(new BasicAuthAuthorizationFilterOptions
+            //         {
+            //             RequireSsl = false,
+            //             SslRedirect = false,
+            //             LoginCaseSensitive = true,
+            //             Users = new[]
+            //             {
+            //                 new BasicAuthAuthorizationUser
+            //                 {
+            //                     Login = configuration["HangfireAuth:Login"],
+            //                     PasswordClear = configuration["HangfireAuth:Password"]
+            //                 }
+            //             }
+            //         })
+            //     };
+            //
+            //     options.DashboardTitle = "Job Schedule Center";
+            // });
+        }
+        
         private void ConfigureCustomException()
         {
             Configure<MvcOptions>(options =>
