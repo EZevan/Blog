@@ -1,8 +1,11 @@
 ﻿using System;
+using Evans.Blog.BackgroundJobs.JobWorkers;
 using Hangfire;
 using Hangfire.Dashboard.BasicAuthorization;
+using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp;
 using Volo.Abp.BackgroundJobs.Hangfire;
+using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Modularity;
 
 namespace Evans.Blog.BackgroundJobs
@@ -49,7 +52,10 @@ namespace Evans.Blog.BackgroundJobs
                             }
                         }
                     })
-                }});
+                }
+            });
+
+            context.AddBackgroundWorker<HangfireTestJob>();
         }
     }
 }
