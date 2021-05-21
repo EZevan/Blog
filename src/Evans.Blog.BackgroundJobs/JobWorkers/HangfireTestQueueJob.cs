@@ -4,37 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Evans.Blog.CategoryTags.Repositories;
+using Evans.Blog.Dto;
+using Evans.Blog.JobItems;
+using Hangfire;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 
 namespace Evans.Blog.BackgroundJobs.JobWorkers
 {
-    public class HangfireTestQueueJob : AsyncPeriodicBackgroundWorkerBase
+    public class HangfireTestQueueJob : AsyncBackgroundJob<HangfireTestJobItem>
     {
-        public HangfireTestQueueJob(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory) 
-            : base(timer, serviceScopeFactory)
+        private readonly PeriodicBackgroundWorkerContext _context;
+
+        public HangfireTestQueueJob(PeriodicBackgroundWorkerContext context)
         {
-            timer.Period = 60000;
+            _context = context;
         }
 
-        protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
+        public override async Task ExecuteAsync(HangfireTestJobItem args)
         {
-            Logger.LogInformation("Starting: Testing hangfile job!");
+            var categoryRep = _context.ServiceProvider.GetService<ICategoryRepository>();
+            var list = await categoryRep.GetListAsync();
+            var result = JsonConvert.SerializeObject(list);
 
-            var categoryRepository = workerContext.ServiceProvider.GetService<ICategoryRepository>();
-
-            if(categoryRepository != null)
-            {
-                var list = await categoryRepository.GetListAsync();
-                var result = JsonConvert.SerializeObject(list);
-                
-                Logger.LogInformation($"Completed: background job,the following is the result of category list:\n{result}");
-            }
-
-            Logger.LogError("Fatal: Executing hangfire job failed!");
+            RecurringJob.AddOrUpdate( () => Console.WriteLine(result), "*/1 * * * *");
         }
     }
 }
