@@ -12,9 +12,9 @@ using Volo.Abp.Threading;
 
 namespace Evans.Blog.BackgroundJobs.JobWorkers
 {
-    public class HangfireTestJob : AsyncPeriodicBackgroundWorkerBase
+    public class HangfireTestQueueJob : AsyncPeriodicBackgroundWorkerBase
     {
-        public HangfireTestJob(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory) 
+        public HangfireTestQueueJob(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory) 
             : base(timer, serviceScopeFactory)
         {
             timer.Period = 60000;
@@ -28,13 +28,13 @@ namespace Evans.Blog.BackgroundJobs.JobWorkers
 
             if(categoryRepository != null)
             {
-                Logger.LogError("Fatal: Executing hangfire job failed!");
-            }
-            
-            var list = await categoryRepository.GetListAsync();
-            var result = JsonConvert.SerializeObject(list);
+                var list = await categoryRepository.GetListAsync();
+                var result = JsonConvert.SerializeObject(list);
                 
-            Logger.LogInformation($"Completed: background job,the following is the result of category list:\n{result}");
+                Logger.LogInformation($"Completed: background job,the following is the result of category list:\n{result}");
+            }
+
+            Logger.LogError("Fatal: Executing hangfire job failed!");
         }
     }
 }

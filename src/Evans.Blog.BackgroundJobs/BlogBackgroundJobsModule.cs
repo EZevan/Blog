@@ -55,7 +55,7 @@ namespace Evans.Blog.BackgroundJobs
                 }
             });
 
-            context.AddBackgroundWorker<HangfireTestJob>();
+            //context.AddBackgroundWorker<HangfireTestJob>();
         }
     }
 }
