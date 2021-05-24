@@ -32,6 +32,8 @@ namespace Evans.Blog.BackgroundJobs.JobWorkers
             var result = JsonConvert.SerializeObject(list);
 
             RecurringJob.AddOrUpdate( () => Console.WriteLine(result), "*/1 * * * *");
+            
+            Logger.LogInformation("Queue the recurring job");
         }
     }
 }
