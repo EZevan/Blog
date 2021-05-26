@@ -5,54 +5,79 @@ namespace Evans.Blog.Jobs
 {
     public class BackgroundJob : FullAuditedEntity<Guid>
     {
+        /// <summary>
+        /// Application Id
+        /// </summary>
         public string  AppId { get; set; }
         
+        /// <summary>
+        /// Job execution url
+        /// </summary>
         public string CallbackUrl { get; set; }
         
+        /// <summary>
+        /// Job execution cron expression
+        /// </summary>
         public string CronExpress { get; set; }
         
-        public string DataID { get; set; }
+        /// <summary>
+        /// The relevant data id of job, such as certain testCaseId
+        /// </summary>
+        public string DataId { get; set; }
         
+        /// <summary>
+        /// Job execution timeout
+        /// </summary>
         public int ExecutionTimeout { get; set; }
         
+        /// <summary>
+        /// Job executed counts
+        /// </summary>
         public int ExecutionCount { get; set; }
         
+        /// <summary>
+        /// Http request header
+        /// </summary>
         public string HttpHeaders { get; set; }
         
+        /// <summary>
+        /// Http request method
+        /// </summary>
         public string HttpMethod { get; set; }
 
+        /// <summary>
+        /// Job code
+        /// </summary>
         public string JobCode { get; set; }
         
+        /// <summary>
+        /// Job name
+        /// </summary>
         public string JobName { get; set; }
         
+        /// <summary>
+        /// Job arguments
+        /// </summary>
         public string JobContext { get; set; }
         
+        /// <summary>
+        /// Whether the job is periodic or not
+        /// </summary>
         public int Periodic { get; set; }
-        
+
+        /// <summary>
+        /// Job execution protocol
+        /// </summary>
         public string Protocol { get; set; }
-        
+
+        /// <summary>
+        /// Queue name
+        /// </summary>
         public string QueueName { get; set; }
         
+        /// <summary>
+        /// Job execution statuis
+        /// </summary>
         public string Status { get; set; }
-        appId: "screening-web"
-        callbackUrl: "http://screening-web/message/msgNoPerfect"
-        createBy: null
-        createTime: "2020-07-06 09:41:53"
-        cronExpression: "0 0 1 * * ?"
-        dataId: null
-        executeTimeout: 1800
-        executionCount: 255
-        httpHeaders: null
-        httpMethod: null
-        id: "8a8380ad724fddde017321c9631f3602"
-        isDeleted: 0
-        jobCode: "createMessageWarnJob"
-        jobContext: null
-        jobName: "生成受试者信息未完善提醒"
-        periodic: 1
-        protocol: "RIBBON"
-        queueName: null
-        splitByTenant: null
-        status: "SUCCESS"
     }
 }
